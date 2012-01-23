@@ -1,5 +1,7 @@
 #!/usr/bin/ruby
 # info: sdl test in ruby, some playing around
+# original example code taken from:
+# http://lorenzod8n.wordpress.com/2007/05/30/ruby-meet-sdl/
 
 require 'sdl'
 

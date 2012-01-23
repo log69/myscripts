@@ -2,9 +2,14 @@
 
 require 'sdl'
 
+# consts
+screen_width     = 1000
+screen_height    = 700
+num_of_points    = 500
+speed_of_points  = 5
+radius_of_points = 3
+
 # init SDL
-screen_width  = 1000
-screen_height = 700
 SDL.init SDL::INIT_VIDEO
 screen = SDL::set_video_mode screen_width, screen_height, 24, SDL::SWSURFACE
 FGCOLOR = screen.format.mapRGB 255, 255, 255
@@ -12,11 +17,8 @@ BGCOLOR = screen.format.mapRGB 0, 0, 0
 
 
 # store random pixel coords
-num = 500
-speed = 5
-rad = 3
 points = []
-for i in (1..num) do points[i] = \
+for i in (1..num_of_points) do points[i] = \
 	[rand * screen_width, rand * screen_height] end
 
 # run it
@@ -36,18 +38,18 @@ while running
 	screen.fill_rect 0, 0, screen_width, screen_height, BGCOLOR
 
 	# draw points
-	for i in (1..num)
+	for i in (1..num_of_points)
 		#screen.put_pixel points[i][0], points[i][1], FGCOLOR end
-		screen.draw_filled_circle points[i][0], points[i][1], rad, FGCOLOR end
+		screen.draw_filled_circle points[i][0], points[i][1], radius_of_points, FGCOLOR end
 
 	# update screen
 	screen.flip
 
 	# move points toward each other
 	r_max = 0
-	for i1 in (1..num)
+	for i1 in (1..num_of_points)
 		i2 = i1 + 1
-		if i2 > num then i2 = 1 end
+		if i2 > num_of_points then i2 = 1 end
 
 		x1 = points[i1][0]
 		y1 = points[i1][1]
@@ -55,8 +57,8 @@ while running
 		y2 = points[i2][1]
 
 		r = ((x2 - x1) ** 2 + (y2 - y1) ** 2) ** 0.5
-		x3 = (x2 - x1) * speed / r + x1
-		y3 = (y2 - y1) * speed / r + y1
+		x3 = (x2 - x1) * speed_of_points / r + x1
+		y3 = (y2 - y1) * speed_of_points / r + y1
 
 		if r > r_max then r_max = r end
 
@@ -65,8 +67,8 @@ while running
 	end
 
 	# generate new points when all points are too close
-	if r_max < speed * 2 then
-		for i in (1..num) do points[i] = \
+	if r_max < speed_of_points * 2 then
+		for i in (1..num_of_points) do points[i] = \
 			[rand * screen_width, rand * screen_height] end
 	end
 

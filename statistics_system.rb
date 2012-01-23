@@ -4,7 +4,7 @@
 # depends: ruby, ps, pidstat (sysstat), acpi, pydf
 # license: GPLv3+
 # Andras Horvath <mail@log69.com>
-# version 0.03
+# version 0.04
 
 
 # colorizing rutins
@@ -24,7 +24,7 @@ if not system("which acpi >/dev/null")
 else
 bar = 40
 out = `acpi -V 2>/dev/null`
-bat = out.scan(/[0-9]+%$/)
+bat = out.scan(/[0-9]+\%/)
 if bat != [] then
 	bat = bat[0].match(/[0-9]+/)
 	len = bat.to_s.to_i

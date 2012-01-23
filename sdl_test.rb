@@ -1,4 +1,5 @@
 #!/usr/bin/ruby
+# info: sdl test in ruby, some playing around
 
 require 'sdl'
 

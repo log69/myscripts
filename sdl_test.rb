@@ -57,13 +57,13 @@ while running
 		r = ((x2 - x1) ** 2 + (y2 - y1) ** 2) ** 0.5
 		x3 = (x2 - x1) * speed / r + x1
 		y3 = (y2 - y1) * speed / r + y1
-		
+
 		if r > r_max then r_max = r end
 
 		points[i1][0] = x3
 		points[i1][1] = y3
 	end
-	
+
 	# generate new points when all points are too close
 	if r_max < speed * 2 then
 		for i in (1..num) do points[i] = \

@@ -15,8 +15,8 @@ radius_of_points = 3
 # init SDL
 SDL.init SDL::INIT_VIDEO
 screen = SDL::set_video_mode screen_width, screen_height, 24, SDL::SWSURFACE
-FGCOLOR = screen.format.mapRGB 255, 255, 255
-BGCOLOR = screen.format.mapRGB 0, 0, 0
+BGCOLOR = screen.format.mapRGB 255, 255, 255
+FGCOLOR = screen.format.mapRGB 0, 0, 0
 
 
 # store random pixel coords
@@ -34,6 +34,9 @@ while running
 		#when SDL::Event2::MouseMotion
 			#x = event.x
 			#y = event.y
+		when SDL::Event2::KeyDown
+			if event.sym == SDL::Key::ESCAPE
+				running = false end
 		end
 	end
 

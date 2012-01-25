@@ -55,7 +55,7 @@ end
 # len means an integer of 4 or greater
 #
 # the rules are:
-# - max 2 vowels may follow each other
+# - max 2 vowels may follow each other if they're not identical except "ee"
 # - max 2 consonants may follow each other if they match
 # - max 1 upper case letter is allowed
 # - max 1 number is allowed
@@ -117,7 +117,8 @@ def get_password_pron(len)
 						# last char was a vowel?
 						if ch_type_old == 0
 							# max 2 vowels allowed after each other
-							if num_vow < 2
+							# if they're not identical except "ee"
+							if num_vow < 2 and (ch1.downcase != ch2.downcase or ch1.downcase == "e")
 								pass += ch1
 								num_vow += 1
 								ok = 1
@@ -180,7 +181,7 @@ def get_password_pron(len)
 			ch_type_old = ch_type
 			ch2 = ch1
 			
-			# was char an upper case?
+			# char was an upper case?
 			if ("A".."Z").to_a.to_s.include? ch1 then cupp = 1 end
 		end
 

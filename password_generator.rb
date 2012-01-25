@@ -1,5 +1,6 @@
 #!/usr/bin/ruby
 # info: generate random passwords without special or mixable chars
+# every odd columns contain "pronounceable" passwords
 # license: public domain
 # Andras Horvath <mail@log69.com>
 

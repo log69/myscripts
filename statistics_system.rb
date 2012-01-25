@@ -45,7 +45,7 @@ text = file.read
 file.close
 text = text.gsub(/ kB$/, "")
 text = text.gsub(/\: */, " ")
-text = text.to_a[0..4]
+text = text.to_s.to_a[0..4]
 
 bar = 40
 mem_total   = text[0].split[1].to_i / 1024

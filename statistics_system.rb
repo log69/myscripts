@@ -26,8 +26,7 @@ bar = 40
 out = `acpi -V 2>/dev/null`
 bat = out.scan(/[0-9]+\%/)
 if bat != [] then
-	bat = bat[0].match(/[0-9]+/)
-	len = bat.to_s.to_i
+	len = bat[0].match(/[0-9]+/).to_s.to_i
 	if len < 0   then len = 0   end
 	if len > 100 then len = 100 end
 	text = "Battery: [" + "#" * (len * bar / 100) + \
@@ -47,7 +46,7 @@ text = file.read
 file.close
 text = text.gsub(/ kB$/, "")
 text = text.gsub(/\: */, " ")
-text = text.to_a.slice(0, 5)
+text = text.to_a[0..4]
 
 bar = 40
 mem_total   = text[0].split[1].to_i / 1024
@@ -75,11 +74,11 @@ if not system("which ps >/dev/null")
 else
 puts red("Memory usage (MB):")
 text = `ps -eo comm,rss`
-texta = text.to_a.slice(1, text.to_a.length)
+texta = text.to_a[1..text.to_a.length-1]
 textb = []
 for i in (0..(texta.length-1))
-	textb[i] = texta[i].split.slice(0), \
-		texta[i].split.slice(1).to_i / 1024
+	textb[i] = texta[i].split[0], \
+		texta[i].split[1].to_i / 1024
 end
 textb = textb.sort
 textc = []
@@ -105,7 +104,7 @@ while true
 	c1 += 1
 	if c1 >= textb.length then break end
 end
-for i in textc.sort.reverse.slice(0,5)
+for i in textc.sort.reverse[0..4]
 	print i[1] + " (" + i[0].to_s + ") "
 end
 puts; puts
@@ -117,11 +116,11 @@ if not system("which pidstat >/dev/null")
 else
 puts red("Disk usage (KB/s):")
 text = `pidstat -hd`
-texta = text.to_a.slice(3, text.to_a.length)
+texta = text.to_a[3, text.to_a.length-1]
 textb = []
 for i in (0..(texta.length-1))
-	textb[i] = texta[i].split.slice(5), \
-		texta[i].split.slice(2).to_f + texta[i].split.slice(3).to_f
+	textb[i] = texta[i].split[5], \
+		texta[i].split[2].to_f + texta[i].split[3].to_f
 end
 textb = textb.sort
 textc = []
@@ -147,7 +146,7 @@ while true
 	c1 += 1
 	if c1 >= textb.length then break end
 end
-for i in textc.sort.reverse.slice(0,5)
+for i in textc.sort.reverse[0..4]
 	print i[1] + " (" + i[0].to_s + ") "
 end
 puts; puts
@@ -159,10 +158,10 @@ if not system("which pidstat >/dev/null")
 else
 puts red("CPU usage (%):")
 text = `pidstat -h`
-texta = text.to_a.slice(3, text.to_a.length)
+texta = text.to_a[3, text.to_a.length-1]
 textb = []
 for i in (0..(texta.length-1))
-	textb[i] = texta[i].split.slice(7), texta[i].split.slice(5)
+	textb[i] = texta[i].split[7], texta[i].split[5]
 end
 textb = textb.sort
 textc = []
@@ -188,7 +187,7 @@ while true
 	c1 += 1
 	if c1 >= textb.length then break end
 end
-for i in textc.sort.reverse.slice(0,5)
+for i in textc.sort.reverse[0..4]
 	print i[1] + " (" + i[0].to_s + ") "
 end
 puts; puts

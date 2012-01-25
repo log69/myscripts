@@ -208,18 +208,11 @@ end
 
 
 # get simple and pronounceable passwords and print them
-puts "pronounceable passwords (8 chars):"
-8.times { print get_password_pron(8)  + " " }
-puts; puts
-
-puts "fully random passwords (8 chars):"
-8.times { print get_password(8)  + " " }
-puts; puts
-
-puts "pronounceable passwords (10 chars):"
-8.times { print get_password_pron(10) + " " }
-puts; puts
-
-puts "fully random passwords (10 chars):"
-8.times { print get_password(10) + " " }
-puts; puts
+# odd columns are much simpler pronounceable passwords
+10.times {
+	print get_password_pron(6)  + " " + get_password(6)  + " " + \
+		  get_password_pron(8)  + " " + get_password(8)  + " " + \
+		  get_password_pron(10) + " " + get_password(10)
+	puts
+}
+puts

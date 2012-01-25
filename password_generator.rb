@@ -98,12 +98,20 @@ def get_password_pron(len)
 	end
 end
 
+
 # get simple and pronouncable passwords and print them
+puts "pronouncable passwords (8 chars):"
 8.times { print get_password_pron(8)  + " " }
-puts
+puts; puts
+
+puts "fully random passwords (8 chars):"
 8.times { print get_password(8)  + " " }
-puts
+puts; puts
+
+puts "pronouncable passwords (10 chars):"
 8.times { print get_password_pron(10) + " " }
-puts
+puts; puts
+
+puts "fully random passwords (10 chars):"
 8.times { print get_password(10) + " " }
-puts
+puts; puts

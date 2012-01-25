@@ -70,7 +70,7 @@ def get_password_pron(len)
 	ch_vow = "aeuAEU"
 	ch_con = "bcdfhkmnprstvwxBCDFGHJKLMNPQRSTVWX"
 	ch_num = "2345678"
-	ch_con_double = ["sh", "ch", "th"]
+	ch_con_double = %w[ ch kh ph sh th ]
 
 	# pass should have at least 4 chars
 	if len < 4 then return "" end

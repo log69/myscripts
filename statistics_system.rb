@@ -45,7 +45,7 @@ text = file.read
 file.close
 text = text.gsub(/ kB$/, "")
 text = text.gsub(/\: */, " ")
-text = text.to_s.to_a[0..4]
+text = text.split("\n")[0..4]
 
 bar = 40
 mem_total   = text[0].split[1].to_i / 1024
@@ -73,7 +73,7 @@ if not system("which ps >/dev/null")
 else
 puts red("Memory usage (MB):")
 text = `ps -eo comm,rss`
-texta = text.to_a[1..text.to_a.length-1]
+texta = text.split("\n")[1..text.split("\n").length-1]
 textb = []
 for i in (0..(texta.length-1))
 	textb[i] = texta[i].split[0], \
@@ -115,7 +115,7 @@ if not system("which pidstat >/dev/null")
 else
 puts red("Disk usage (KB/s):")
 text = `pidstat -hd`
-texta = text.to_a[3, text.to_a.length-1]
+texta = text.split("\n")[3, text.split("\n").length-1]
 textb = []
 for i in (0..(texta.length-1))
 	textb[i] = texta[i].split[5], \
@@ -157,7 +157,7 @@ if not system("which pidstat >/dev/null")
 else
 puts red("CPU usage (%):")
 text = `pidstat -h`
-texta = text.to_a[3, text.to_a.length-1]
+texta = text.split("\n")[3, text.split("\n").length-1]
 textb = []
 for i in (0..(texta.length-1))
 	textb[i] = texta[i].split[7], texta[i].split[5]

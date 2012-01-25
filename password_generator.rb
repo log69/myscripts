@@ -73,7 +73,8 @@ def get_password_pron(len)
 		cerr = 0
 
 		# get a sample
-		pass = `pwgen -c -n -B #{len} 1`
+		pass = `pwgen -c -n -B #{len} 1 2>/dev/null`
+		if pass == "" then return pass end
 		pass = pass[0..-2]
 
 		for i in (0..len-1)

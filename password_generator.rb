@@ -148,7 +148,7 @@ def get_password_pron(len)
 						if ch_type_old == 1
 							# max 2 consonants allowed after each other
 							# they must be the same or in the allowed match list
-							if num_con < 2 and (ch2 == ch1 or ch_con_double.include? (ch2 + ch1))
+							if num_con < 2 and (ch2 == ch1 or ch_con_double.include? ch2 + ch1)
 								pass += ch1
 								num_con += 1
 								ok = 1

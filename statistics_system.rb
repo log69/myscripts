@@ -1,10 +1,10 @@
 #!/usr/bin/ruby
-# PRINT SYSTEM STATISTICS
-# (also, summarizes the values of the separate processes)
+# info: print overall system statistics
+# (also summarizes the values of separate processes with the same names)
 # depends: ruby, ps, pidstat (sysstat), acpi, pydf
-# license: GPLv3+
+# license: public domain
 # Andras Horvath <mail@log69.com>
-# version 0.04
+# version 0.05
 
 
 # colorizing rutins

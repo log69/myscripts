@@ -50,7 +50,7 @@ def get_password(len)
 end
 
 
-# get a _pronouncable_ password of a specified length
+# get a _pronounceable_ password of a specified length
 # that doesn't contain similar easily mixable chars
 # and can be used properly on english and hungarian keybords too
 # len means an integer of 4 or greater
@@ -99,8 +99,8 @@ def get_password_pron(len)
 end
 
 
-# get simple and pronouncable passwords and print them
-puts "pronouncable passwords (8 chars):"
+# get simple and pronounceable passwords and print them
+puts "pronounceable passwords (8 chars):"
 8.times { print get_password_pron(8)  + " " }
 puts; puts
 
@@ -108,7 +108,7 @@ puts "fully random passwords (8 chars):"
 8.times { print get_password(8)  + " " }
 puts; puts
 
-puts "pronouncable passwords (10 chars):"
+puts "pronounceable passwords (10 chars):"
 8.times { print get_password_pron(10) + " " }
 puts; puts
 

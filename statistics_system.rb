@@ -4,7 +4,6 @@
 # depends: ruby, ps, pidstat (sysstat), acpi, pydf
 # license: public domain
 # Andras Horvath <mail@log69.com>
-# version 0.05
 
 
 # colorizing rutins

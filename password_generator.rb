@@ -7,7 +7,7 @@
 
 # get a password of a specified length
 # that doesn't contain similar easily mixable chars
-# and can be used properly on english and hungarian keybords too
+# and can be used properly on english and hungarian keyboards too
 # len means an integer of 4 or greater
 #
 # the rules are:
@@ -49,7 +49,7 @@ end
 
 # get a _pronounceable_ password of a specified length
 # that doesn't contain similar easily mixable chars
-# and can be used properly on english and hungarian keybords too
+# and can be used properly on english and hungarian keyboards too
 # len means an integer of 4 or greater
 #
 # the rules are:

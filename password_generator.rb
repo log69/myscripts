@@ -107,6 +107,7 @@ def get_password_pron(len)
 
 					# is it the first run on the first char?
 					if first_run == 1 then
+						# make sure there is 1 upper case
 						pass += [ch.upcase]
 						num_vow += 1
 						ok = 1
@@ -137,6 +138,7 @@ def get_password_pron(len)
 
 					# is it the first run on the first char?
 					if first_run == 1 then
+						# make sure there is 1 upper case
 						pass += [ch.upcase]
 						num_con += 1
 						ok = 1

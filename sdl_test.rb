@@ -1,6 +1,6 @@
 #!/usr/bin/ruby
 # info: sdl test in ruby, some playing around
-# depends: lib-ruby
+# depends: libsdl-ruby
 # original example code taken from:
 # http://lorenzod8n.wordpress.com/2007/05/30/ruby-meet-sdl/
 # license: public domain

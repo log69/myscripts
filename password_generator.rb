@@ -1,8 +1,28 @@
 #!/usr/bin/ruby
-# info: generate random passwords without special or mixable chars
-# odd columns contain "pronounceable" passwords
+# info: generate random passwords without special or mixable chars too
+# command [pass length]
+# without parameter it prints 6 columns of passwords
+# each containing stronger ones by going to the right
 # license: public domain
 # Andras Horvath <mail@log69.com>
+
+
+# get a strong password of a specified length
+# len means an integer of 4 or greater
+#
+# the rules are:
+# - characters can be any of the ASCII chars
+def get_password_strong(len)
+
+	pass = ""
+	
+	# choose chars from ASCII code 33 - 126
+	len.times.each do
+		pass += (rand(126+1-33) + 33).chr
+	end
+	
+	return pass
+end
 
 
 # get a password of a specified length
@@ -210,12 +230,28 @@ def get_password_pron(len)
 end
 
 
-# get simple and pronounceable passwords and print them
-# odd columns are much simpler pronounceable passwords
-10.times {
-	print get_password_pron(6)  + " " + get_password(6)  + " " + \
-		  get_password_pron(8)  + " " + get_password(8)  + " " + \
-		  get_password_pron(10) + " " + get_password(10)
+# is there an argument?
+if ARGV.length == 0
+	# get pronounceable, simple and strong passwords and print them
+	10.times do
+		print 	get_password_pron(8) 	+ " " + \
+				get_password_pron(10)	+ " " + \
+				get_password(8)			+ " " + \
+				get_password(10)		+ " " + \
+				get_password_strong(8)	+ " " + \
+				get_password_strong(10)
+		puts
+	end
 	puts
-}
-puts
+else
+	n = ARGV[0].to_i
+	# argument must be a number greater than 4
+	if n >= 4
+		10.times do
+		print 	get_password_pron(n) 	+ " " + \
+				get_password(n)			+ " " + \
+				get_password_strong(n)
+		puts
+		end
+	end
+end

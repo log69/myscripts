@@ -2,7 +2,7 @@
 # info: print overall system statistics
 # (also summarizes the values of separate processes with the same names)
 # depends: ruby, ps, pidstat (sysstat), acpi, pydf
-# license: public domain
+# license: GPLv3+
 # Andras Horvath <mail@log69.com>
 
 

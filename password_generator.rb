@@ -3,7 +3,7 @@
 # command [pass length]
 # without parameter it prints 6 columns of passwords
 # each containing stronger ones by going to the right
-# license: public domain
+# license: GPLv3+
 # Andras Horvath <mail@log69.com>
 
 

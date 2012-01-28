@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 # info: print overall system statistics
 #  summarizes the values of the separate processes with the same names
 #  cpu usage of processes show the used cpu since their start

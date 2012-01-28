@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 # info: sdl test in ruby, some playing around
 # depends: libsdl-ruby
 # original example code taken from:

@@ -7,6 +7,25 @@
 # Andras Horvath <mail@log69.com>
 
 
+# shuffle method of Array class is not available before Ruby 1.8.7
+# add it to make this script compatible with earlier versions too
+# this fucntion is 10 times slower then the shuffle method in 1.8.7
+# info: mix the contents of an array in random order
+#  and return result array
+def shuffle(array)
+	result = []
+	l = array.length
+	l.times do
+		i = rand(l)
+		a = array[i]
+		array.delete_at(i)
+		result.push(a)
+		l -= 1
+	end
+	return result
+end
+
+
 # get a strong password of a specified length
 # len means an integer of 4 or greater
 #
@@ -63,7 +82,8 @@ def get_password(len)
 	end
 
 	# shuffle the order of chars in result
-	return pass.split("").shuffle.join
+	#return pass.split("").shuffle.join
+	return shuffle(pass.split("")).join
 end
 
 
@@ -207,8 +227,10 @@ def get_password_pron(len)
 			end
 		end
 		# shuffle them separately
-		pass_ar1.shuffle!
-		pass_ar2.shuffle!
+		#pass_ar1.shuffle!
+		#pass_ar2.shuffle!
+		pass_ar1 = shuffle(pass_ar1)
+		pass_ar2 = shuffle(pass_ar2)
 		# put them back to their places
 		pass2 = []
 		c1 = 0; c2 = 0;

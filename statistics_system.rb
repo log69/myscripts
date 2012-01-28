@@ -220,13 +220,13 @@ puts; puts
 # -------------------------
 if which("pydf")
 	system("pydf")
+	puts
 end
 
 # ---------------
 # --- battery ---
 # ---------------
 if which("acpi")
-	puts
 	bar = 40
 	out = `acpi -V 2>/dev/null`
 	if out.match(/^Battery.*[0-9]+/).to_s != "" then

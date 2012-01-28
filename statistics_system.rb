@@ -23,7 +23,7 @@ def which(cmd)
 	paths.push("/usr/local/bin", "/usr/bin", "/bin").uniq!
 	paths.each do |dir|
 		file = dir + "/" + cmd
-		if File.exists?(file) and File.executable?(file)
+		if File.file?(file) and File.executable?(file)
 			return true end
 	end
 	return
@@ -31,7 +31,7 @@ end
 
 
 # check for Linux platform
-if not File.exists?("/proc")
+if not File.directory?("/proc")
 	puts "error: platform doesn't seem to be Linux or /proc filesystem is missing"
 	exit 1
 end

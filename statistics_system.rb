@@ -171,9 +171,7 @@ end
 # print cpu list
 puts red("CPU usage (%):")
 for i in proc_cur.sort.reverse[0..4]
-	print i[1] + " (" + \
-		((i[0].to_f * 100 / sys_uptime).round.to_f / 100).to_s \
-		+ ") "
+	print i[1] + " (" + ("%.2f" % (i[0].to_f / sys_uptime)).to_s + ") "
 end
 puts; puts
 
@@ -203,9 +201,7 @@ end
 # print disk list
 puts red("Disk usage (KB/s):")
 for i in proc_cur.sort.reverse[0..4]
-	print i[1] + " (" + \
-		((i[0].to_f * 100 / sys_uptime).round.to_f / 100).to_s \
-		+ ") "
+	print i[1] + " (" + ("%.2f" % (i[0].to_f / sys_uptime)).to_s + ") "
 end
 puts; puts
 

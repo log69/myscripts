@@ -30,6 +30,12 @@ def which(cmd)
 end
 
 
+# check for Linux platform
+if not File.exists?("/proc")
+	puts "error: platform doesn't seem to be Linux or /proc filesystem is missing"
+	exit 1
+end
+
 # --------------
 # --- uptime ---
 # --------------

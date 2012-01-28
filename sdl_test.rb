@@ -3,7 +3,7 @@
 # depends: libsdl-ruby
 # original example code taken from:
 # http://lorenzod8n.wordpress.com/2007/05/30/ruby-meet-sdl/
-# license: GPLv3+
+# license: GPLv3+ <http://www.gnu.org/licenses/gpl.txt>
 # Andras Horvath <mail@log69.com>
 
 require 'sdl'

@@ -1,4 +1,4 @@
-#!/usr/bin/ruby
+#!/usr/bin/env ruby
 # info: generate random passwords without special or mixable chars too
 # command [pass length]
 # without parameter it prints 6 columns of passwords

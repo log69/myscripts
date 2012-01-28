@@ -214,31 +214,33 @@ puts; puts
 # --- system disk usage ---
 # -------------------------
 if not which("pydf")
-	puts "error: pydf command missing"; puts
+	puts "warning: pydf command missing"
 else
-system("pydf"); puts
+	system("pydf")
 end
 
 # ---------------
 # --- battery ---
 # ---------------
 if not which("acpi")
-	puts "warning: acpi command missing"; puts
-else
-bar = 40
-out = `acpi -V 2>/dev/null`
-bat = out.scan(/[0-9]+\%/)
-if bat != [] then
-	len = bat[0].match(/[0-9]+/).to_s.to_i
-	if len < 0   then len = 0   end
-	if len > 100 then len = 100 end
-	text = "Battery: [" + "#" * (len * bar / 100) + \
-		"." * ((100 - len) * bar / 100) + "]"
-	if len >= 20 then puts green(text)
-	else              puts red(text)
-	end
-	puts out
 	puts
-end
+	puts "warning: acpi command missing"
+else
+	puts
+	bar = 40
+	out = `acpi -V 2>/dev/null`
+	bat = out.scan(/[0-9]+\%/)
+	if bat != [] then
+		len = bat[0].match(/[0-9]+/).to_s.to_i
+		if len < 0   then len = 0   end
+		if len > 100 then len = 100 end
+		text = "Battery: [" + "#" * (len * bar / 100) + \
+			"." * ((100 - len) * bar / 100) + "]"
+		if len >= 20 then puts green(text)
+		else              puts red(text)
+		end
+		puts out
+		puts
+	end
 end
 

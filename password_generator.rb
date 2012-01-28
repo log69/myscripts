@@ -36,7 +36,7 @@ def get_password_strong(len)
 	pass = ""
 	
 	# choose chars from ASCII code 33 - 126
-	len.times.each do
+	len.times do
 		pass += (rand(126+1-33) + 33).chr
 	end
 	

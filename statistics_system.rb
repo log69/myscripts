@@ -30,7 +30,9 @@ def which(cmd)
 end
 
 
-# uptime
+# --------------
+# --- uptime ---
+# --------------
 # get uptime of system in seconds
 f = File.open("/proc/uptime")
 text = f.read; f.close
@@ -57,7 +59,10 @@ text = f.read; f.close
 print "load " + (text.split[0..2] * ", ").to_s
 puts; puts
 
-# system memory
+
+# ---------------------
+# --- system memory ---
+# ---------------------
 print blue("Memory (MB): ")
 file = File.open("/proc/meminfo", "r")
 text = file.read

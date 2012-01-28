@@ -214,19 +214,14 @@ puts; puts
 # -------------------------
 # --- system disk usage ---
 # -------------------------
-if not which("pydf")
-	puts "warning: pydf command missing"
-else
+if which("pydf")
 	system("pydf")
 end
 
 # ---------------
 # --- battery ---
 # ---------------
-if not which("acpi")
-	puts
-	puts "warning: acpi command missing"
-else
+if which("acpi")
 	puts
 	bar = 40
 	out = `acpi -V 2>/dev/null`
@@ -245,3 +240,18 @@ else
 	end
 end
 
+
+# ------------------------------
+# --- check for dependencies ---
+# ------------------------------
+miss = []
+comm = %w[ pydf acpi ]
+comm.each do |c|
+	if not which(c) then miss += [c] end
+end
+# print warning message about missing dependencies
+if miss.length > 0
+	print "warning: the following commands missing: "
+	print miss.join(", ")
+	puts
+end

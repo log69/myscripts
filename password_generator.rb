@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-# info: generate random passwords without special or mixable chars too
+# info: generate random passwords, also without special or mixable chars
 # command [pass length]
 # without parameter it prints 6 columns of passwords
 # each containing stronger ones by going to the right
@@ -8,9 +8,9 @@
 
 
 # shuffle method of Array class is not available before Ruby 1.8.7
-# add it to make this script compatible with earlier versions too
-# this fucntion is 10 times slower then the shuffle method in 1.8.7
-# info: mix the contents of an array in random order
+# add this to make this script compatible with earlier versions too
+# this function is approx. 10 times slower then the native shuffle method
+# info: mix the contents of an array into random order
 #  and return result array
 def shuffle(array)
 	result = []

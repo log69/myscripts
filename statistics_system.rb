@@ -136,8 +136,6 @@ Dir.foreach("/proc") do |file|
 			p_mem = text.match("^VmRSS\:.*").to_s.match("[0-9]+").to_s.to_i
 		end
 		
-#		puts p_name + " / cpu = " + p_cpu.to_s + " / mem = " + p_mem.to_s + " / disk = " + p_disk.to_s
-		
 		if p_name != ""
 			proc_list += [[p_name, p_cpu, p_mem, p_disk]] end
 	end

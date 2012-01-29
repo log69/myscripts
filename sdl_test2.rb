@@ -175,7 +175,7 @@ class Cube
 		x1d, y1d = convert_coords(p1[0], p1[1], p1[2])
 		x2d, y2d = convert_coords(p2[0], p2[1], p2[2])
 		# draw line
-		s.draw_line(x1d, y1d, x2d, y2d, $FGCOLOR)
+		s.draw_aa_line(x1d, y1d, x2d, y2d, $FGCOLOR)
 	end
 	
 	# convert coords to screen coords using perspectivity

@@ -167,19 +167,23 @@ class Cube
 		return x, y, z
 	end
 
-	# draw a line connecting point p1 to point p2 with perspective
+	# draw a line between 2 points
 	def line(screen, p1, p2)
 		# get screen object
 		s = screen.get
-		# calculate coords
-		x1 = p1[0]; y1 = p1[1]; z1 = p1[2]
-		x2 = p2[0]; y2 = p2[1]; z2 = p2[2]
-		x1d = x1 * $persp / ($space_size / 2 + z1) + $screen_width  / 2
-		y1d = y1 * $persp / ($space_size / 2 + z1) + $screen_height / 2
-		x2d = x2 * $persp / ($space_size / 2 + z2) + $screen_width  / 2
-		y2d = y2 * $persp / ($space_size / 2 + z2) + $screen_height / 2
+		# convert coords
+		x1d, y1d = convert_coords(p1[0], p1[1], p1[2])
+		x2d, y2d = convert_coords(p2[0], p2[1], p2[2])
 		# draw line
 		s.draw_line(x1d, y1d, x2d, y2d, $FGCOLOR)
+	end
+	
+	# convert coords to screen coords using perspectivity
+	def convert_coords(x, y, z)
+		r = (x * x + y * y + (z - $space_size) * (z - $space_size)) ** 0.5
+		xd = x * $persp / r + $screen_width  / 2
+		yd = y * $persp / r + $screen_height / 2
+		return xd, yd
 	end
 
 end
@@ -192,9 +196,9 @@ end
 # init
 screen = Screen.new
 
-# 3D objects
-cube1 = Cube.new(0, 0, 0, 100)
-cube2 = Cube.new(0, 0, 300, 50)
+# create objects
+cube1 = Cube.new(0, 0, 0, 200)
+cube2 = Cube.new(500, 0, 0, 50)
 
 # run it
 running = true
@@ -218,9 +222,10 @@ while running
 	screen.clear
 
 	# change objects
-	cube1.draw_rotated(screen, y.to_f/100.0, x.to_f/100.0, 0)
-	cube2.rotate(0.03, 0.02, 0.01)
-	cube2.rotate_origo(0.00, -0.015, -0.01)
+	cube1.draw_rotated(screen,	-(y - $screen_height / 2).to_f/100.0, \
+								-(x - $screen_width /  2).to_f/100.0, 0)
+	cube2.rotate(0.03, 0.06, 0.04)
+	cube2.rotate_origo(0.00, 0.01, 0.00)
 	cube2.draw(screen)
 
 	# update screen

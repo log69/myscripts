@@ -40,6 +40,11 @@ while running
 		when SDL::Event2::KeyDown
 			if event.sym == SDL::Key::ESCAPE
 				running = false end
+			if event.sym == SDL::Key::SPACE
+				# store random pixel coords
+				for i in (1..num_of_points) do points[i] = \
+					[rand * screen_width, rand * screen_height] end
+			end
 		end
 	end
 

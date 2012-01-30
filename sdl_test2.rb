@@ -180,9 +180,8 @@ class Cube
 	
 	# convert coords to screen coords using perspectivity
 	def convert_coords(x, y, z)
-		r = (x * x + y * y + (z - $space_size) * (z - $space_size)) ** 0.5
-		xd = x * $persp / r + $screen_width  / 2
-		yd = y * $persp / r + $screen_height / 2
+		xd = x * $persp / (z + $space_size) + $screen_width  / 2
+		yd = y * $persp / (z + $space_size) + $screen_height / 2
 		return xd, yd
 	end
 
@@ -198,7 +197,7 @@ screen = Screen.new
 
 # create objects
 cube1 = Cube.new(0, 0, 0, 200)
-cube2 = Cube.new(500, 0, 0, 50)
+cube2 = Cube.new(-500, 0, 0, 50)
 
 # run it
 running = true
@@ -222,11 +221,11 @@ while running
 	screen.clear
 
 	# change objects
-	cube1.draw_rotated(screen,	(y - $screen_height / -2).to_f / 100.0, \
-								(x - $screen_width  / -2).to_f / 100.0, 0)
+	cube1.draw_rotated(screen,	(y - $screen_height / 2).to_f / 100.0, \
+								(x - $screen_width  / 2).to_f / 100.0, 0)
 
 	cube2.rotate(0.03, 0.06, 0.04)
-	cube2.rotate_origo(0.00, 0.01, 0.00)
+	cube2.rotate_origo(0.00, -0.01, 0.00)
 	cube2.draw(screen)
 
 	# update screen

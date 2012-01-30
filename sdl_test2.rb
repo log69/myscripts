@@ -20,23 +20,23 @@ class Screen
 	# init and create SDL screen
 	def initialize
 		SDL.init SDL::INIT_VIDEO
-		@@screen = SDL::set_video_mode $screen_width, $screen_height, 24, SDL::SWSURFACE
-		@@screen.fill_rect 0, 0, $screen_width, $screen_height, $BGCOLOR
+		@screen = SDL::set_video_mode $screen_width, $screen_height, 24, SDL::SWSURFACE
+		@screen.fill_rect 0, 0, $screen_width, $screen_height, $BGCOLOR
 	end
 
 	# get screen object
 	def get
-		return @@screen
+		return @screen
 	end
 
 	# clear screen
 	def clear
-		@@screen.fill_rect 0, 0, $screen_width, $screen_height, $BGCOLOR
+		@screen.fill_rect 0, 0, $screen_width, $screen_height, $BGCOLOR
 	end
 
 	# update screen
 	def update
-		@@screen.flip
+		@screen.flip
 	end
 end
 

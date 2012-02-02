@@ -226,30 +226,31 @@ end
 # ---------------
 # --- battery ---
 # ---------------
-if which("acpi")
-	bar = 40
-	out = `acpi -V 2>/dev/null`
-	if out.match(/^Battery.*[0-9]+/).to_s != "" then
-		bat = out.scan(/[0-9]+\%/)
-		len = bat[0].match(/[0-9]+/).to_s.to_i
-		if len < 0   then len = 0   end
-		if len > 100 then len = 100 end
-		text = "Battery: [" + "#" * (len * bar / 100) + \
-			"." * ((100 - len) * bar / 100) + "]"
-		if len >= 20 then puts green(text)
-		else              puts red(text)
-		end
-	end
-	puts out
-	puts
-end
+#if which("acpi")
+#	bar = 40
+#	out = `acpi -V 2>/dev/null`
+#	if out.match(/^Battery.*[0-9]+/).to_s != "" then
+#		bat = out.scan(/[0-9]+\%/)
+#		len = bat[0].match(/[0-9]+/).to_s.to_i
+#		if len < 0   then len = 0   end
+#		if len > 100 then len = 100 end
+#		text = "Battery: [" + "#" * (len * bar / 100) + \
+#			"." * ((100 - len) * bar / 100) + "]"
+#		if len >= 20 then puts green(text)
+#		else              puts red(text)
+#		end
+#	end
+#	puts out
+#	puts
+#end
 
 
 # ------------------------------
 # --- check for dependencies ---
 # ------------------------------
 miss = []
-comm = %w[ pydf acpi ]
+#comm = %w[ pydf acpi ]
+comm = %w[ pydf ]
 comm.each do |c|
 	if not which(c) then miss += [c] end
 end

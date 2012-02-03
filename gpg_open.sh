@@ -25,8 +25,9 @@ if ! [ -f "$FILE" ]; then
 fi
 
 
-# file to store unencrypted file temporarily
+# temp file to store unencrypted file temporarily
 TEMP=$(mktemp /dev/shm/tmp.XXXXXX)
+# temp file to store the stderr output of gpg
 OUTP=$(mktemp /dev/shm/tmp.XXXXXX)
 
 # make sure to remove file even after abnormal program termination

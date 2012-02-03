@@ -13,7 +13,7 @@
 FILE="$1"
 
 # check if there are any parameters
-if [ "$FILE" == "" ]; then
+if [ -z "$FILE" ]; then
 	echo "usage: script [encrypted file]"
 	exit 1
 fi

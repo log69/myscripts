@@ -52,7 +52,7 @@ fi
 # open file and wait for the process to terminate
 echo $(xdg-open $TEMP) &>/dev/null && wait
 # encrypt back its content
-cat "$TEMP" | /usr/bin/gpg -e -r "$KEYID" 1>"$FILE" 2>/dev/null
+cat "$TEMP" | /usr/bin/gpg -e -r "$KEYID" 1>"$FILE"
 chmod 600 "$FILE"
 # delete unencrypted data
 rm -f "$TEMP" "$OUTP"

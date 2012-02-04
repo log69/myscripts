@@ -24,6 +24,12 @@ error(){
 }
 
 
+# check if commands are available
+if ! which gpg      &>/dev/null; then error "error: command gpg is missing";      exit 1; fi
+if ! which stty     &>/dev/null; then error "error: command stty is missing";     exit 1; fi
+if ! which zenity   &>/dev/null; then error "error: command zenity is missing";   exit 1; fi
+if ! which xdg-open &>/dev/null; then error "error: command xdg-open is missing"; exit 1; fi
+
 # store file name
 FILE="$1"
 

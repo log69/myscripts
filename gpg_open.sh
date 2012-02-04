@@ -9,7 +9,7 @@
 # Andras Horvath <mail@log69.com>
 
 
-# print error message (to console to to GUI)
+# print error message (to console or to GUI)
 error(){
 	# is command run from a console?
 	CON=$(stty)

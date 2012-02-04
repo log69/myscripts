@@ -4,9 +4,24 @@
 #  and encrypts back its content after application exit
 # usage: script file
 # example: script file.txt.gpg
-# depends: gnupg
+# depends: gnupg, stty, zenity
 # license: GPLv3+ <http://www.gnu.org/licenses/gpl.txt>
 # Andras Horvath <mail@log69.com>
+
+
+# print error message (to console to to GUI)
+error(){
+	# is command run from a console?
+	CON=$(stty)
+	if ! [ -z "$CON" ]; then
+		# if so, then print message to console
+		echo "$1"
+	else
+		# otherwise print it to GUI
+		TITLE=$(basename $0)
+		zenity --error --title "$TITLE" --text "$1"
+	fi
+}
 
 
 # store file name
@@ -14,13 +29,13 @@ FILE="$1"
 
 # check if there are any parameters
 if [ -z "$FILE" ]; then
-	echo "usage: script [encrypted file]"
+	error "usage: script [encrypted file]"
 	exit 1
 fi
 
 # check if file exists
 if ! [ -f "$FILE" ]; then
-	echo "error: file doesn't exist"
+	error "error: file doesn't exist"
 	exit 1
 fi
 
@@ -35,8 +50,7 @@ trap "{ rm -f $TEMP $OUTP; exit 255; }" 0 1 2 3 5 15
 
 # decrypt the file
 if ! /usr/bin/gpg --no-tty -v --decrypt "$FILE" 1>"$TEMP" 2>"$OUTP"; then
-	echo "error: failure during decryption"
-	cat "$OUTP"
+	error "error: failure during decryption"
 	exit 1
 fi
 
@@ -46,7 +60,7 @@ KEYID=$(cat "$OUTP" | grep "public key is" | grep -oE "[^ ]+$")
 # is it a public key encrypted file?
 # if symmetric encryption, then failure
 if [ -z "$KEYID" ]; then
-	echo "error: not a public key encrypted file"
+	error "error: not a public key encrypted file"
 	exit 1
 fi
 

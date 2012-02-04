@@ -48,10 +48,21 @@ OUTP=$(mktemp)
 # make sure to remove file even after abnormal program termination
 trap "{ rm -f $TEMP $OUTP; exit 255; }" 0 1 2 3 5 15
 
-# decrypt the file
-if ! /usr/bin/gpg --no-tty -v --decrypt "$FILE" 1>"$TEMP" 2>"$OUTP"; then
-	error "error: failure during decryption"
-	exit 1
+# is command run from a console?
+# use --no-tty option for gpg only if it's run from GUI
+CON=$(stty)
+if [ -z "$CON" ]; then
+	# decrypt the file
+	if ! /usr/bin/gpg -v --decrypt "$FILE" 1>"$TEMP" 2>"$OUTP"; then
+		error "error: failure during decryption"
+		exit 1
+	fi
+else
+	# decrypt the file
+	if ! /usr/bin/gpg --no-tty -v --decrypt "$FILE" 1>"$TEMP" 2>"$OUTP"; then
+		error "error: failure during decryption"
+		exit 1
+	fi
 fi
 
 # grep key id from gpg output

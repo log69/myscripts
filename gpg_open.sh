@@ -41,9 +41,9 @@ fi
 
 
 # temp file to store unencrypted file temporarily
-TEMP=$(mktemp /dev/shm/tmp.XXXXXX)
+TEMP=$(mktemp)
 # temp file to store the stderr output of gpg
-OUTP=$(mktemp /dev/shm/tmp.XXXXXX)
+OUTP=$(mktemp)
 
 # make sure to remove file even after abnormal program termination
 trap "{ rm -f $TEMP $OUTP; exit 255; }" 0 1 2 3 5 15

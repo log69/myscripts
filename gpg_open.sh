@@ -60,13 +60,21 @@ CON=$(stty)
 if [ -z "$CON" ]; then
 	# decrypt the file
 	if ! /usr/bin/gpg --no-tty -v --decrypt "$FILE" 1>"$TEMP" 2>"$OUTP"; then
-		error "error: failure during decryption"
+		# was it cancelled by user?
+		if ! cat "$OUTP" | grep -q "cancelled by user"; then
+			error "error: failure during decryption"
+		fi
+		# exit anyway
 		exit 1
 	fi
 else
 	# decrypt the file
 	if ! /usr/bin/gpg -v --decrypt "$FILE" 1>"$TEMP" 2>"$OUTP"; then
-		error "error: failure during decryption"
+		# was it cancelled by user?
+		if ! cat "$OUTP" | grep -q "cancelled by user"; then
+			error "error: failure during decryption"
+		fi
+		# exit anyway
 		exit 1
 	fi
 fi

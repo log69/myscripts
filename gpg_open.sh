@@ -34,7 +34,7 @@ OUTP=$(mktemp /dev/shm/tmp.XXXXXX)
 trap "{ rm -f $TEMP $OUTP; exit 255; }" 0 1 2 3 5 15
 
 # decrypt the file
-if ! /usr/bin/gpg -v --decrypt "$FILE" 1>"$TEMP" 2>"$OUTP"; then
+if ! /usr/bin/gpg --no-tty -v --decrypt "$FILE" 1>"$TEMP" 2>"$OUTP"; then
 	echo "error: failure during decryption"
 	cat "$OUTP"
 	exit 1

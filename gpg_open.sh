@@ -4,7 +4,7 @@
 #  and encrypts back its content after application exit
 # usage: script file
 # example: script file.txt.gpg
-# depends: gnupg, stty, zenity
+# depends: gnupg, stty, zenity, xdg-open
 # license: GPLv3+ <http://www.gnu.org/licenses/gpl.txt>
 # Andras Horvath <mail@log69.com>
 

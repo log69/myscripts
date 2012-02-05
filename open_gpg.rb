@@ -64,15 +64,31 @@ def mime_app(ext)
 	if type == "" or type == nil then return "" end
 	# read up all mime info
 	text = fread(MIMEINFO)
-	# search for my mime type, the result is a .desktop file name
-	icon = text.match(/^#{type}=[^;$\n]+/).to_s.match(/[^=]+$/).to_s
-	if icon == "" or icon == nil then return "" end
-	# read content of .desktop file
-	text = fread("#{APPICONS}/#{icon}")
-	# get binary name from .desktop file
-	app = text.match(/^exec=[^ \n$]+/i).to_s[5..-1]
-	
-	return app
+	# search for my mime type, the result is an array of .desktop file names
+	icon = text.match(/^#{type}=.+/).to_s.match(/=.*/).to_s[1..-1].split(";").reverse
+	if icon == nil then return "" end
+
+	# search through all .desktop files backwards
+	icon.each do |ic|
+		app = ""
+		# path to .desktop icon
+		fname = "#{APPICONS}/#{icon}"
+		# .desktop file exists at its place?
+		if not File.file? fname
+			# file missing, so take icon name as binary name
+			app = ic.match(/.*\.desktop/).to_s[0..-9]
+		else
+			# read content of .desktop file
+			text = fread(fname)
+			# get binary name from .desktop file
+			app = text.match(/^exec=[^ \n$]+/i).to_s[5..-1]
+		end
+
+		# check if binary exists
+		if which(app) then return app end
+	end
+
+	return ""
 end
 
 

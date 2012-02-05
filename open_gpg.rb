@@ -135,7 +135,7 @@ if keyid == ""
 # get app for extension type
 APP = mime_app(ext)
 # open file and wait for the process to terminate
-c = "#{APP} #{temp} &>/dev/null"
+c = "#{APP} #{temp} &>/dev/null && wait"
 system(c)
 # encrypt back its content
 text = fread(temp)

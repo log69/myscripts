@@ -4,7 +4,7 @@
 #  and encrypts back its content after application exit
 # usage: script file
 # example: script file.txt.gpg
-# depends: gnupg, stty, zenity, xdg-mime
+# depends: gnupg, stty, zenity, xdg-open
 # license: GPLv3+ <http://www.gnu.org/licenses/gpl.txt>
 # Andras Horvath <mail@log69.com>
 
@@ -28,7 +28,7 @@ error(){
 if ! which gpg      &>/dev/null; then error "error: command gpg is missing";      exit 1; fi
 if ! which stty     &>/dev/null; then error "error: command stty is missing";     exit 1; fi
 if ! which zenity   &>/dev/null; then error "error: command zenity is missing";   exit 1; fi
-if ! which xdg-mime &>/dev/null; then error "error: command xdg-mime is missing"; exit 1; fi
+if ! which xdg-open &>/dev/null; then error "error: command xdg-open is missing"; exit 1; fi
 
 # store file name
 FILE="$1"
@@ -89,21 +89,8 @@ if [ -z "$KEYID" ]; then
 	exit 1
 fi
 
-# get the file name without the last (.gpg) extension
-F2=$(echo "$FILE" | grep -oE "^.*\." | head -c-2)
-F3=$(basename "$F2")
-# determine the type of file
-T2=$(mktemp XXXXXX."$F3")
-TYPE=$(xdg-mime query filetype "$T2")
-rm -f "$T2"
-# determine the associated app (returns a .desktop file)
-APP=$(xdg-mime query default "$TYPE")
-# determine the real name of the app
-BIN=$(grep -m1 -i "^exec=" /usr/share/applications/"$APP" | grep -i "^exec" | grep -oE "^[^ ]+" | tail -c+6)
-
-
-# open file with app and wait for the process to terminate
-"$BIN" "$TEMP" &>/dev/null && wait
+# open file and wait for the process to terminate
+echo $(xdg-open "$TEMP") &>/dev/null && wait
 # encrypt back its content
 cat "$TEMP" | /usr/bin/gpg -e -r "$KEYID" 1>"$FILE"
 chmod 600 "$FILE"

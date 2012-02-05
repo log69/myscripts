@@ -61,12 +61,12 @@ def mime_app(ext)
 	text = fread(MIMETYPE)
 	# search for my extension
 	type = text.match(/^.*[\t ]#{ext}[\t \n$].*/).to_s.split("\t")[0]
-	if type == "" then return end
+	if type == "" or type == nil then return "" end
 	# read up all mime info
 	text = fread(MIMEINFO)
 	# search for my mime type, the result is a .desktop file name
 	icon = text.match(/^#{type}=[^;$\n]+/).to_s.match(/[^=]+$/).to_s
-	if icon == "" then return end
+	if icon == "" or icon == nil then return "" end
 	# read content of .desktop file
 	text = fread("#{APPICONS}/#{icon}")
 	# get binary name from .desktop file
@@ -102,6 +102,13 @@ if ext == "" or ext == nil
 	error("error: no secondary file extension"); exit 1 end
 ext = ext.downcase
 
+# get app for extension type
+APP = mime_app(ext)
+if APP == ""
+	error("error: no registered application for the file type")
+	exit 1
+end
+
 
 # temp file to store unencrypted file temporarily
 f=Tempfile.new("open_gpg"); temp=f.path; f.close
@@ -134,20 +141,14 @@ keyid = out.match(/public key is.*/).to_s.match(/[^ ]+$/).to_s
 if keyid == ""
 	error("error: not a public key encrypted file"); exit 1 end
 
-# get app for extension type
-APP = mime_app(ext)
-if APP != ""
-	# open file and wait for the process to terminate
-	c = "#{APP} #{temp} &>/dev/null && wait"
-	system(c)
-	# encrypt back its content
-	text = fread(temp)
-	c = "cat #{temp} | #{GPG} -e -r #{keyid} 1>#{file}"
-	system(c)
-else
-	error("error: no registered application for the file type")
-	exit 1
-end
+# open file and wait for the process to terminate
+c = "#{APP} #{temp} &>/dev/null && wait"
+system(c)
+# encrypt back its content
+text = fread(temp)
+c = "cat #{temp} | #{GPG} -e -r #{keyid} 1>#{file}"
+system(c)
+
 # sync to make sure the deletion is committed
 f = File.new(temp); f.fsync; f.close
 f = File.new(outp); f.fsync; f.close

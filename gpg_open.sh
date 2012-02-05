@@ -4,10 +4,18 @@
 #  and encrypts back its content after application exit
 # usage: script file
 # example: script file.txt.gpg
-# depends: gnupg, stty, zenity, xdg-open
+# depends: gnupg, stty, zenity
 # license: GPLv3+ <http://www.gnu.org/licenses/gpl.txt>
 # Andras Horvath <mail@log69.com>
 
+
+# get app name for mime type
+mime_app(){
+	# mime files
+	MIME_TYPE="/etc/mime.types"
+	MIME_INFO="/usr/share/applications/mimeinfo.cache"
+	
+}
 
 # print error message (to console or to GUI)
 error(){
@@ -28,7 +36,6 @@ error(){
 if ! which gpg      &>/dev/null; then error "error: command gpg is missing";      exit 1; fi
 if ! which stty     &>/dev/null; then error "error: command stty is missing";     exit 1; fi
 if ! which zenity   &>/dev/null; then error "error: command zenity is missing";   exit 1; fi
-if ! which xdg-open &>/dev/null; then error "error: command xdg-open is missing"; exit 1; fi
 
 # store file name
 FILE="$1"
@@ -90,7 +97,8 @@ if [ -z "$KEYID" ]; then
 fi
 
 # open file and wait for the process to terminate
-echo $(xdg-open "$TEMP") &>/dev/null && wait
+APP=mime_app "$TEMP"
+"$APP" "$TEMP" &>/dev/null && wait
 # encrypt back its content
 cat "$TEMP" | /usr/bin/gpg -e -r "$KEYID" 1>"$FILE"
 chmod 600 "$FILE"

@@ -6,6 +6,7 @@
 # license: GPLv3+ <http://www.gnu.org/licenses/gpl.txt>
 # Andras Horvath <mail@log69.com>
 
+#require 'rubygems'
 require 'sdl'
 
 # consts
@@ -20,6 +21,9 @@ SDL.init SDL::INIT_VIDEO
 screen = SDL::set_video_mode screen_width, screen_height, 24, SDL::SWSURFACE
 BGCOLOR = screen.format.mapRGB 255, 255, 255
 FGCOLOR = screen.format.mapRGB 0, 0, 0
+
+# clear screen
+screen.fill_rect 0, 0, screen_width, screen_height, BGCOLOR
 
 
 # store random pixel coords

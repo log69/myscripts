@@ -1,24 +1,23 @@
 #!/usr/bin/env ruby
 # info: opens a public key encrypted gpg file for viewing or editing
 #  with the application that is the registered for the file type
+#  or the one that is manually specified on the command line
 #  and encrypts back its content after application exit
-# usage: script file
+# usage: script [file] or script [app] [file]
 # example: script file.txt.gpg
 # platform: Linux, Unix
-# depends: gnupg, stty, zenity
+# depends: gpg, zenity, xdg-open, *strace
+# (*optional dependency, it helps with an ugly hack)
+# (gpg is the part of gnupg, xdg-open is part of xdg-utils package)
 # license: GPLv3+ <http://www.gnu.org/licenses/gpl.txt>
 # Andras Horvath <mail@log69.com>
 
 require 'tempfile'
 
-# command names
+# shell commands
 GPG      = "gpg"
-STTY     = "stty"
 ZENITY   = "zenity"
-# system file paths
-MIMETYPE = "/etc/mime.types"
-MIMEINFO = "/usr/share/applications/mimeinfo.cache"
-APPICONS = "/usr/share/applications"
+OPEN     = "xdg-open"
 
 
 # check the existence of an executable
@@ -33,10 +32,26 @@ def which(cmd)
 	return
 end
 
+# print info message to console or to GUI
+def info(text)
+	# is command run from a console?
+	# to determine this, thanks goes to hrgy84 and this site:
+	# http://rubyonwindows.blogspot.com/2008/06/running-in-console-window.html
+	if STDIN.isatty
+		# if so, then print message to console
+		puts text
+	else
+		# otherwise print it to GUI
+		title = File.basename($PROGRAM_NAME)
+		c = "#{ZENITY} --info --title \"#{title}\" --text \"#{text}\""
+		system(c)
+	end
+end
+
 # print error message to console or to GUI
 def error(text)
 	# is command run from a console?
-	if `#{STTY}` != ""
+	if STDIN.isatty
 		# if so, then print message to console
 		puts text
 	else
@@ -50,95 +65,88 @@ end
 # read and return the contents of file
 def fread(file)
 	f = open(file, "r")
-	text = f.read
+	res = f.read
 	f.close
-	return text
+	return res
 end
 
-# get app name for extension type and return binary name
-def mime_app(ext)
-	# get all contents of mime type
-	text = fread(MIMETYPE)
-	# search for my extension
-	type = text.match(/^.*[\t ]#{ext}[\t \n$].*/).to_s.split("\t")[0]
-	if type == "" or type == nil then return "" end
-	# read up all mime info
-	text = fread(MIMEINFO)
-	# search for my mime type, the result is an array of .desktop file names
-	icon = text.match(/^#{type}=.+/).to_s.match(/=.*/).to_s[1..-1].split(";").reverse
-	if icon == nil then return "" end
-
-	# search through all .desktop files backwards
-	icon.each do |ic|
-		app = ""
-		# path to .desktop icon
-		fname = "#{APPICONS}/#{icon}"
-		# .desktop file exists at its place?
-		if not File.file? fname
-			# file missing, so take icon name as binary name
-			app = ic.match(/.*\.desktop/).to_s[0..-9]
-		else
-			# read content of .desktop file
-			text = fread(fname)
-			# get binary name from .desktop file
-			app = text.match(/^exec=[^ \n$]+/i).to_s[5..-1]
-		end
-
-		# check if binary exists
-		if which(app) then return app end
-	end
-
-	return ""
+# write the content to a file
+def fwrite(file, text)
+	f = File.open(file, "w")
+	f.write(text)
+	f.close
 end
 
+
+# --- main ---
 
 # check if commands are available
-if not which(GPG)    then error("error: command gpg is missing");    exit 1 end
-if not which(STTY)   then error("error: command stty is missing");   exit 1 end
-if not which(ZENITY) then error("error: command zenity is missing"); exit 1 end
+if not which(GPG)    then error("error: command gpg is missing");      exit 1 end
+if not which(ZENITY) then error("error: command zenity is missing");   exit 1 end
+if not which(OPEN)   then error("error: command xdg-open is missing"); exit 1 end
 
 # are there any arguments
-if ARGV.length != 1
+if ARGV.length == 0
 	# if no then fail
-	error("usage: script [encrypted file]")
+	error("usage: script [file] or script [app] [file]")
 	exit 1
 end
 
-# get file name
-file = ARGV[0].to_s
+# get arguments
+comm = ""
+name = ""
+if ARGV.length > 1
+	# get app name and file name
+	comm = ARGV[0].to_s
+	name = ARGV[1].to_s
+else
+	# get file name
+	name = ARGV[0].to_s
+end
+
 # file exists?
-if not File.file?(file)
+if not File.file?(name)
 	error("error: file doesn't exist"); exit 1 end
 # file has extension .gpg?
-if file.match(/[^\.]+$/).to_s.downcase != "gpg"
+if name.match(/[^\.]+$/).to_s.downcase != "gpg"
 	error("error: file is not appropriate type"); exit 1 end
 # get secondary extension type
-ext = file.match(/^.*\./).to_s.match(/\.[^\.]+/).to_s[1..-1]
+ext = name.match(/^.*\./).to_s.match(/\.[^\.]+/).to_s[1..-1]
 if ext == "" or ext == nil
 	error("error: no secondary file extension"); exit 1 end
 ext = ext.downcase
 
-# get app for extension type
-APP = mime_app(ext)
-if APP == ""
-	error("error: no registered application for the file type")
+
+# temp file to store unencrypted file temporarily
+f = Tempfile.new("open_gpg"); temp = f.path; f.close
+# temp file to store the stderr output of gpg
+f = Tempfile.new("open_gpg"); outp = f.path; f.close
+
+# --- trap code to delete unencrypted files on exit ---
+
+Signal.trap("INT") do
+	File.delete(temp)
+	File.delete(outp)
+	puts "\nMegszakítva!"
+	exit 1
+end
+Signal.trap("TERM") do
+	File.delete(temp)
+	File.delete(outp)
+	puts "\nMegszakítva!"
 	exit 1
 end
 
-
-# temp file to store unencrypted file temporarily
-f=Tempfile.new("open_gpg"); temp=f.path; f.close
-# temp file to store the stderr output of gpg
-f=Tempfile.new("open_gpg"); outp=f.path; f.close
+# -----------------
 
 # is command run from a console?
-# use --no-tty option for gpg only if it's run from GUI
-if `#{STTY}` != ""
+# use --no-tty option for gpg if it's run from GUI
+if STDIN.isatty
 	# set command
-	c = "#{GPG} -v --decrypt #{file} 1>#{temp} 2>#{outp}"
+	c = "#{GPG} -v --decrypt #{name} 1>#{temp} 2>#{outp}"
 else
 	# set command with "--no-tty" option
-	c = "#{GPG} --no-tty -v --decrypt #{file} 1>#{temp} 2>#{outp}"
+	c = "#{GPG} --no-tty -v --decrypt #{name} 1>#{temp} 2>#{outp}"
 end
 
 # decrypt the file
@@ -157,20 +165,68 @@ keyid = out.match(/public key is.*/).to_s.match(/[^ ]+$/).to_s
 if keyid == ""
 	error("error: not a public key encrypted file"); exit 1 end
 
-# open file and wait for the process to terminate
-c = "#{APP} #{temp} &>/dev/null && wait"
-system(c)
+
+if comm == ""
+	# command to run xdg.open on a file to open it in an app
+	c = "#{OPEN} #{temp}"
+	system(c)
+
+	# search for process whose process group ID matches my PID
+	pidok = 0
+	Dir.foreach("/proc").to_a.reverse.each do |d|
+		# is subdir a number?
+		if d.match(/^\d+$/)
+			p = "/proc/#{d}/cmdline"
+			# cmdline file exists?
+			if File.file? p
+				# read up /proc/PID/cmdline file
+				cmdline = fread(p)
+				# does the process's cmdline contain the temp file name?
+				if cmdline.match(temp)
+					# if so, then this is what I'm looking for
+					# because I don't expect any other process to contain
+					# my random file name
+					pidok = d.to_i
+					break
+				end
+			end
+		end
+	end
+
+	# did I find any process?
+	if pidok > 0
+		# wait for the foreign pid to finish
+		# this is not a child process, so I can't wait for it with the system wait
+		# an ugly hack might do the job without having to be polling it :)
+		# if strace available, then I use that one - if not, then I keep polling
+		# thanks to lacos
+		if which("strace")
+			c = "strace -e none -p #{pidok} &>/dev/null"
+			system("strace -e none -p #{pidok} &>/dev/null")
+		else
+			f = "/proc/#{pidok}"
+			while File.directory? f
+				sleep 0.1
+			end
+		end
+	end
+else
+	# open file with manually specified app
+	c = "#{comm} #{temp}"
+	system(c)
+end
+
+
 # encrypt back its content
-text = fread(temp)
-c = "cat #{temp} | #{GPG} -e -r #{keyid} 1>#{file}"
+c = "cat #{temp} | #{GPG} -e -r #{keyid} 1>#{name}"
 system(c)
 
-# sync to make sure the deletion is committed
-f = File.new(temp); f.fsync; f.close
-f = File.new(outp); f.fsync; f.close
 # delete unencrypted and temp datas
 File.delete(temp)
 File.delete(outp)
+
+# info message
+info("info: data has been reencrypted back successfully")
 
 
 exit

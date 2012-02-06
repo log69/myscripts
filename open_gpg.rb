@@ -171,43 +171,57 @@ if comm == ""
 	c = "#{OPEN} #{temp}"
 	system(c)
 
-	# search for process whose process group ID matches my PID
-	pidok = 0
-	Dir.foreach("/proc").to_a.reverse.each do |d|
-		# is subdir a number?
-		if d.match(/^\d+$/)
-			p = "/proc/#{d}/cmdline"
-			# cmdline file exists?
-			if File.file? p
-				# read up /proc/PID/cmdline file
-				cmdline = fread(p)
-				# does the process's cmdline contain the temp file name?
-				if cmdline.match(temp)
-					# if so, then this is what I'm looking for
-					# because I don't expect any other process to contain
-					# my random file name
-					pidok = d.to_i
-					break
+	# this is a saftey delay here to research for the app if it hasn't started yet
+	# this can happen when xdg-open is late a bit and the app opens up
+	#  after this part of code
+	# cc is the maximum number of tries and tt is the time to wait
+	#  so this adds up to whole 3 sec
+	cc = 15
+	tt = 0.2
+	while cc > 0
+
+		# search for process whose process group ID matches my PID
+		pidok = 0
+		Dir.foreach("/proc").to_a.reverse.each do |d|
+			# is subdir a number?
+			if d.match(/^\d+$/)
+				p = "/proc/#{d}/cmdline"
+				# cmdline file exists?
+				if File.file? p
+					# read up /proc/PID/cmdline file
+					cmdline = fread(p)
+					# does the process's cmdline contain the temp file name?
+					if cmdline.match(temp)
+						# if so, then this is what I'm looking for
+						# because I don't expect any other process to contain
+						# my random file name
+						pidok = d.to_i
+						break
+					end
 				end
 			end
 		end
+
+		# did I find any process?
+		if pidok > 0 then break end
+		
+		# sleep some and then search for it again
+		sleep tt
+		cc -= 1
 	end
 
-	# did I find any process?
-	if pidok > 0
-		# wait for the foreign pid to finish
-		# this is not a child process, so I can't wait for it with the system wait
-		# an ugly hack might do the job without having to be polling it :)
-		# if strace available, then I use that one - if not, then I keep polling
-		# thanks to lacos
-		if which("strace")
-			c = "strace -e none -p #{pidok} &>/dev/null"
-			system("strace -e none -p #{pidok} &>/dev/null")
-		else
-			f = "/proc/#{pidok}"
-			while File.directory? f
-				sleep 0.1
-			end
+	# wait for the foreign pid to finish
+	# this is not a child process, so I can't wait for it with the system wait
+	# an ugly hack might do the job without having to be polling it :)
+	# if strace available, then I use that one - if not, then I keep polling
+	# thanks to lacos
+	if which("strace")
+		c = "strace -e none -p #{pidok} &>/dev/null"
+		system("strace -e none -p #{pidok} &>/dev/null")
+	else
+		f = "/proc/#{pidok}"
+		while File.directory? f
+			sleep 0.1
 		end
 	end
 else

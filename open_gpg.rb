@@ -240,7 +240,7 @@ File.delete(temp)
 File.delete(outp)
 
 # info message
-info("info: data has been reencrypted back successfully")
+info("info: data has been encrypted back successfully")
 
 
 exit

@@ -88,7 +88,7 @@ def cleanup
 		# delete only files
 		if not File.directory? d
 			# does the name of file start with my temp name?
-			if d.match(/^#{TEMPNAME}/)
+			if d.match(/#{TEMPNAME}/)
 				# delete file
 				File.delete("#{TEMPDIR}/#{d}")
 			end

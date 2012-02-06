@@ -127,13 +127,13 @@ f = Tempfile.new("open_gpg"); outp = f.path; f.close
 Signal.trap("INT") do
 	File.delete(temp)
 	File.delete(outp)
-	puts "\nMegszakítva!"
+	error("error: program has been terminated!")
 	exit 1
 end
 Signal.trap("TERM") do
 	File.delete(temp)
 	File.delete(outp)
-	puts "\nMegszakítva!"
+	error("error: program has been terminated!")
 	exit 1
 end
 

@@ -136,6 +136,7 @@ if ext == "" or ext == nil
 ext = ext.downcase
 
 
+cleanup
 # temp file to store unencrypted file temporarily
 f = Tempfile.new(TEMPNAME, TEMPDIR); temp = f.path + "." + ext; f.close
 # temp file to store the stderr output of gpg

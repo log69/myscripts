@@ -18,6 +18,8 @@ require 'tempfile'
 GPG      = "gpg"
 ZENITY   = "zenity"
 OPEN     = "xdg-open"
+TEMPNAME = "open_gpg_"
+TEMPDIR  = "/dev/shm"
 
 
 # check the existence of an executable
@@ -77,6 +79,21 @@ def fwrite(file, text)
 	f.close
 end
 
+# delete all (new and old) temp files
+def cleanup
+	# go through all files and delete every temp file of mine
+	Dir.foreach(TEMPDIR) do |d|
+		# delete only files
+		if not File.directory? d
+			# does the name of file start with my temp name?
+			if d.match(/^#{TEMPNAME}/)
+				# delete file
+				File.delete("#{TEMPDIR}/#{d}")
+			end
+		end
+	end
+end
+
 
 # --- main ---
 
@@ -118,21 +135,20 @@ ext = ext.downcase
 
 
 # temp file to store unencrypted file temporarily
-f = Tempfile.new("open_gpg"); temp = f.path + "." + ext; f.close
+f = Tempfile.new(TEMPNAME, TEMPDIR); temp = f.path + "." + ext; f.close
 # temp file to store the stderr output of gpg
-f = Tempfile.new("open_gpg"); outp = f.path + "." + ext; f.close
+f = Tempfile.new(TEMPNAME, TEMPDIR); outp = f.path + "." + ext; f.close
+
 
 # --- trap code to delete unencrypted files on exit ---
 
 Signal.trap("INT") do
-	File.delete(temp)
-	File.delete(outp)
+	cleanup
 	error("error: program has been terminated!")
 	exit 1
 end
 Signal.trap("TERM") do
-	File.delete(temp)
-	File.delete(outp)
+	cleanup
 	error("error: program has been terminated!")
 	exit 1
 end
@@ -236,8 +252,7 @@ c = "cat #{temp} | #{GPG} -e -r #{keyid} 1>#{name}"
 system(c)
 
 # delete unencrypted and temp datas
-File.delete(temp)
-File.delete(outp)
+cleanup
 
 # info message
 info("info: data has been encrypted back successfully")

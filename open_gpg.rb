@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # info: opens a public key encrypted gpg file for viewing or editing
-#  with the application that is the registered for the file type
+#  with the application that is registered for that file type
 #  or the one that is manually specified on the command line
 #  and encrypts back its content after application exit
 # usage: script [file] or script [app] [file]
@@ -175,7 +175,7 @@ if comm == ""
 	# this can happen when xdg-open is late a bit and the app opens up
 	#  after this part of code
 	# cc is the maximum number of tries and tt is the time to wait
-	#  so this adds up to whole 3 sec
+	#  so this adds up to a whole 3 sec
 	cc = 15
 	tt = 0.2
 	while cc > 0
@@ -213,7 +213,7 @@ if comm == ""
 	# wait for the foreign pid to finish
 	# this is not a child process, so I can't wait for it with the system wait
 	# an ugly hack might do the job without having to be polling it :)
-	# if strace available, then I use that one - if not, then I keep polling
+	# if strace is available, then I use that one - if not, then I keep polling
 	# thanks to lacos
 	if which("strace")
 		c = "strace -e none -p #{pidok} &>/dev/null"

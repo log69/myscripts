@@ -14,12 +14,14 @@
 
 require 'tempfile'
 
+# temp file settings
+TEMPDIR  = "/dev/shm"
+TEMPNAME = "open_gpg_41eb8f6cd3df437c815ca32c44ab568d_"
+
 # shell commands
 GPG      = "gpg"
 ZENITY   = "zenity"
 OPEN     = "xdg-open"
-TEMPNAME = "open_gpg_"
-TEMPDIR  = "/dev/shm"
 
 
 # check the existence of an executable
@@ -168,6 +170,7 @@ end
 # decrypt the file
 if not system(c)
 	out = fread(outp)
+	cleanup
 	# was it cancelled by user?
 	if out.match(/cancelled by user/) == nil
 		error("error: failure during decryption") end
@@ -179,7 +182,10 @@ end
 out = fread(outp)
 keyid = out.match(/public key is.*/).to_s.match(/[^ ]+$/).to_s
 if keyid == ""
-	error("error: not a public key encrypted file"); exit 1 end
+	cleanup
+	error("error: not a public key encrypted file");
+	exit 1
+end
 
 
 if comm == ""

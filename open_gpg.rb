@@ -118,9 +118,9 @@ ext = ext.downcase
 
 
 # temp file to store unencrypted file temporarily
-f = Tempfile.new("open_gpg"); temp = f.path; f.close
+f = Tempfile.new("open_gpg"); temp = f.path + "." + ext; f.close
 # temp file to store the stderr output of gpg
-f = Tempfile.new("open_gpg"); outp = f.path; f.close
+f = Tempfile.new("open_gpg"); outp = f.path + "." + ext; f.close
 
 # --- trap code to delete unencrypted files on exit ---
 

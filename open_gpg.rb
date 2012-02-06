@@ -171,7 +171,7 @@ if comm == ""
 	c = "#{OPEN} #{temp}"
 	system(c)
 
-	# this is a saftey delay here to research for the app if it hasn't started yet
+	# this is a safety delay here to research for the app if it hasn't started yet
 	# this can happen when xdg-open is late a bit and the app opens up
 	#  after this part of code
 	# cc is the maximum number of tries and tt is the time to wait

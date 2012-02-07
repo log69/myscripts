@@ -87,7 +87,7 @@ def cleanup
 	Dir.foreach(TEMPDIR) do |d|
 		# delete only files
 		if not File.directory? d
-			# does the name of file start with my temp name?
+			# does the name of file contain my temp name?
 			if d.match(/#{TEMPNAME}/)
 				# delete file
 				File.delete("#{TEMPDIR}/#{d}")

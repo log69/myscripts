@@ -258,7 +258,7 @@ end
 c = "cat #{temp} | #{GPG} -e -r #{keyid} 1>#{name}"
 system(c)
 
-# delete unencrypted and temp datas
+# delete unencrypted temporary datas
 cleanup
 
 # info message

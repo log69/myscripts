@@ -130,10 +130,7 @@ if not File.file?(name)
 if name.match(/[^\.]+$/).to_s.downcase != "gpg"
 	error("error: file is not appropriate type"); exit 1 end
 # get secondary extension type
-ext = name.match(/^.*\./).to_s.match(/\.[^\.]+/).to_s[1..-1]
-if ext == "" or ext == nil
-	error("error: no secondary file extension"); exit 1 end
-ext = ext.downcase
+ext = name.match(/^.*\./).to_s.match(/\.[^\.]+/).to_s[1..-1].to_s.downcase
 
 
 cleanup

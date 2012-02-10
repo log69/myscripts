@@ -13,6 +13,8 @@
 # Andras Horvath <mail@log69.com>
 
 require 'tempfile'
+require 'fileutils'
+
 
 # temp file settings
 TEMPDIR  = "/dev/shm"
@@ -81,23 +83,23 @@ def fwrite(file, text)
 	f.close
 end
 
-# delete all (new and old) temp files
-def cleanup
-	# go through all files and delete every temp file of mine
-	Dir.foreach(TEMPDIR) do |d|
-		# delete only files
-		if not File.directory? d
-			# does the name of file contain my temp name?
-			if d.match(/#{TEMPNAME}/)
-				# delete file
-				File.delete("#{TEMPDIR}/#{d}")
-			end
+# delete file
+def fdelete(file)
+	# file has a name?
+	if file != "" and file != nil
+		# file exists?
+		if File.file? file
+			# delete file
+			File.delete(file)
 		end
 	end
 end
 
 
 # --- main ---
+
+# global temp files
+$temp = ""; $putp = ""
 
 # check if commands are available
 if not which(GPG)    then error("error: command gpg is missing");      exit 1 end
@@ -133,42 +135,42 @@ if name.match(/[^\.]+$/).to_s.downcase != "gpg"
 ext = name.match(/^.*\./).to_s.match(/\.[^\.]+/).to_s[1..-1].to_s.downcase
 
 
-cleanup
 # temp file to store unencrypted file temporarily
-f = Tempfile.new(TEMPNAME, TEMPDIR); temp = f.path + "." + ext; f.close
+f = Tempfile.new(TEMPNAME, TEMPDIR); $temp = f.path + "." + ext; f.delete; f.close
 # temp file to store the stderr output of gpg
-f = Tempfile.new(TEMPNAME, TEMPDIR); outp = f.path + "." + ext; f.close
+f = Tempfile.new(TEMPNAME, TEMPDIR); $outp = f.path + "." + ext; f.delete; f.close
 
 
-# --- trap code to delete unencrypted files on exit ---
-
+# trap code to delete unencrypted files on exit
 Signal.trap("INT") do
-	cleanup
+	fdelete($temp); fdelete($outp)
 	error("error: program has been terminated!")
 	exit 1
 end
 Signal.trap("TERM") do
-	cleanup
+	fdelete($temp); fdelete($outp)
 	error("error: program has been terminated!")
 	exit 1
 end
 
-# -----------------
+
+# create safety backup as file.gpg.bak
+FileUtils.cp name, "#{name}.bak"
 
 # is command run from a console?
 # use --no-tty option for gpg if it's run from GUI
 if STDIN.isatty
 	# set command
-	c = "#{GPG} -v --decrypt #{name} 1>#{temp} 2>#{outp}"
+	c = "#{GPG} -v --decrypt #{name} 1>#{$temp} 2>#{$outp}"
 else
 	# set command with "--no-tty" option
-	c = "#{GPG} --no-tty -v --decrypt #{name} 1>#{temp} 2>#{outp}"
+	c = "#{GPG} --no-tty -v --decrypt #{name} 1>#{$temp} 2>#{$outp}"
 end
 
 # decrypt the file
 if not system(c)
-	out = fread(outp)
-	cleanup
+	out = fread($outp)
+	fdelete($temp); fdelete($outp)
 	# was it cancelled by user?
 	if out.match(/cancelled by user/) == nil
 		error("error: failure during decryption") end
@@ -177,10 +179,10 @@ if not system(c)
 end
 
 # get key id from gpg output
-out = fread(outp)
+out = fread($outp)
 keyid = out.match(/public key is.*/).to_s.match(/[^ ]+$/).to_s
 if keyid == ""
-	cleanup
+	fdelete($temp); fdelete($outp)
 	error("error: not a public key encrypted file");
 	exit 1
 end
@@ -188,7 +190,7 @@ end
 
 if comm == ""
 	# command to run xdg.open on a file to open it in an app
-	c = "#{OPEN} #{temp}"
+	c = "#{OPEN} #{$temp}"
 	system(c)
 
 	# this is a safety delay here to research for the app if it hasn't started yet
@@ -211,7 +213,7 @@ if comm == ""
 					# read up /proc/PID/cmdline file
 					cmdline = fread(p)
 					# does the process's cmdline contain the temp file name?
-					if cmdline.match(temp)
+					if cmdline.match($temp)
 						# if so, then this is what I'm looking for
 						# because I don't expect any other process to contain
 						# my random file name
@@ -224,7 +226,7 @@ if comm == ""
 
 		# did I find any process?
 		if pidok > 0 then break end
-		
+
 		# sleep some and then search for it again
 		sleep tt
 		cc -= 1
@@ -246,17 +248,17 @@ if comm == ""
 	end
 else
 	# open file with manually specified app
-	c = "#{comm} #{temp}"
+	c = "#{comm} #{$temp}"
 	system(c)
 end
 
 
 # encrypt back its content
-c = "cat #{temp} | #{GPG} -e -r #{keyid} 1>#{name}"
+c = "cat #{$temp} | #{GPG} -e -r #{keyid} 1>#{name}"
 system(c)
 
 # delete unencrypted temporary datas
-cleanup
+fdelete($temp); fdelete($outp)
 
 # info message
 info("info: data has been encrypted back successfully")

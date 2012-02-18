@@ -221,8 +221,8 @@ while running
 	screen.clear
 
 	# change objects
-	cube1.draw_rotated(screen,	(y - $screen_height / 2).to_f / 100.0, \
-								(x - $screen_width  / 2).to_f / 100.0, 0)
+	cube1.draw_rotated(screen,	(y - $screen_height.to_f / 2).to_f / 100.0, \
+								(x - $screen_width.to_f  / 2).to_f / 100.0, 0)
 
 	cube2.rotate(0.03, 0.06, 0.04)
 	cube2.rotate_origo(0.00, -0.01, 0.00)

@@ -12,13 +12,20 @@
 # license: GPLv3+ <http://www.gnu.org/licenses/gpl.txt>
 # Andras Horvath <mail@log69.com>
 
+# IMPORTANT:
+#  the script is not entire and not fully functional yet
+# KNOWN ISSUES:
+#  if the app to be opened for the file type is already running,
+#  then the script doesn't work as expected
+#  this issue must still be addressed
+
 require 'tempfile'
 require 'fileutils'
 
 
 # temp file settings
-TEMPDIR  = "/dev/shm"
-TEMPNAME = "open_gpg_41eb8f6cd3df437c815ca32c44ab568d_"
+$TEMPDIR  = "/dev/shm"
+$TEMPNAME = "open_gpg_41eb8f6cd3df437c815ca32c44ab568d_"
 
 # shell commands
 GPG      = "gpg"
@@ -95,6 +102,21 @@ def fdelete(file)
 	end
 end
 
+# delete all temp files
+def fdelete_pattern(dir, pattern)
+	# input params are ok?
+	if dir != "" and dir != nil and pattern != "" and pattern != nil
+		# list all files in temporary dir
+		Dir.foreach(dir).to_a.each do |d|
+			# file name contains temp name?
+			if d.match(/#{pattern}/) != nil
+				# delete file
+				fdelete("#{dir}/#{d}")
+			end
+		end
+	end
+end
+
 
 # --- main ---
 
@@ -136,19 +158,21 @@ ext = name.match(/^.*\./).to_s.match(/\.[^\.]+/).to_s[1..-1].to_s.downcase
 
 
 # temp file to store unencrypted file temporarily
-f = Tempfile.new(TEMPNAME, TEMPDIR); $temp = f.path + "." + ext; f.delete; f.close
+f = Tempfile.new($TEMPNAME, $TEMPDIR); $temp = f.path + "." + ext; f.delete; f.close
 # temp file to store the stderr output of gpg
-f = Tempfile.new(TEMPNAME, TEMPDIR); $outp = f.path + "." + ext; f.delete; f.close
+f = Tempfile.new($TEMPNAME, $TEMPDIR); $outp = f.path + "." + ext; f.delete; f.close
 
 
 # trap code to delete unencrypted files on exit
 Signal.trap("INT") do
-	fdelete($temp); fdelete($outp)
+	fdelete_pattern($TEMPDIR, File.basename($temp))
+	fdelete_pattern($TEMPDIR, File.basename($outp))
 	error("error: program has been terminated!")
 	exit 1
 end
 Signal.trap("TERM") do
-	fdelete($temp); fdelete($outp)
+	fdelete_pattern($TEMPDIR, File.basename($temp))
+	fdelete_pattern($TEMPDIR, File.basename($outp))
 	error("error: program has been terminated!")
 	exit 1
 end
@@ -170,7 +194,8 @@ end
 # decrypt the file
 if not system(c)
 	out = fread($outp)
-	fdelete($temp); fdelete($outp)
+	fdelete_pattern($TEMPDIR, File.basename($temp))
+	fdelete_pattern($TEMPDIR, File.basename($outp))
 	# was it cancelled by user?
 	if out.match(/cancelled by user/) == nil
 		error("error: failure during decryption") end
@@ -182,7 +207,8 @@ end
 out = fread($outp)
 keyid = out.match(/public key is.*/).to_s.match(/[^ ]+$/).to_s
 if keyid == ""
-	fdelete($temp); fdelete($outp)
+	fdelete_pattern($TEMPDIR, File.basename($temp))
+	fdelete_pattern($TEMPDIR, File.basename($outp))
 	error("error: not a public key encrypted file");
 	exit 1
 end
@@ -258,7 +284,8 @@ c = "cat #{$temp} | #{GPG} -e -r #{keyid} 1>#{name}"
 system(c)
 
 # delete unencrypted temporary datas
-fdelete($temp); fdelete($outp)
+fdelete_pattern($TEMPDIR, File.basename($temp))
+fdelete_pattern($TEMPDIR, File.basename($outp))
 
 # info message
 info("info: data has been encrypted back successfully")

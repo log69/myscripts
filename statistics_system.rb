@@ -9,6 +9,8 @@
 # license: GPLv3+ <http://www.gnu.org/licenses/gpl.txt>
 # Andras Horvath <mail@log69.com>
 
+# constants
+$num = 16
 
 # print colorized text
 def colorize(text, color_code) "\e[#{color_code}m#{text}\e[0m" end
@@ -179,7 +181,7 @@ for i in (0..proc_new.length-1)
 end
 # print cpu list
 puts red("CPU usage (%):")
-for i in proc_cur.sort.reverse[0..4]
+for i in proc_cur.sort.reverse[0..$num-1]
 	print i[1] + " (" + ("%.2f" % (i[0].to_f / sys_uptime)).to_s + ") "
 end
 puts; puts
@@ -194,7 +196,7 @@ for i in (0..proc_new.length-1)
 end
 # print mem list
 puts red("Memory usage (MB):")
-for i in proc_cur.sort.reverse[0..4]
+for i in proc_cur.sort.reverse[0..$num-1]
 	print i[1] + " (" + i[0].to_s + ") "
 end
 puts; puts
@@ -209,7 +211,7 @@ for i in (0..proc_new.length-1)
 end
 # print disk list
 puts red("Disk usage (KB/s):")
-for i in proc_cur.sort.reverse[0..4]
+for i in proc_cur.sort.reverse[0..$num-1]
 	print i[1] + " (" + ("%.2f" % (i[0].to_f / sys_uptime)).to_s + ") "
 end
 puts; puts

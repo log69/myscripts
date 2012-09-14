@@ -256,6 +256,9 @@ c = []
 proc_list2 = []
 # calculate sum of separate value types (cpu, disk, mem etc.)
 l = proc_list.length
+for i2 in (1..4)
+	c[i2] = 1
+end
 for i in (0..l-1)
 	for i2 in (1..4)
 		c[i2] = c[i2].to_i + proc_list[i][i2]

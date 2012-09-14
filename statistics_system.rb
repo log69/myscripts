@@ -284,7 +284,7 @@ puts; puts
 # --- system disk usage ---
 # -------------------------
 miss = []
-if not which("pydf")
+if which("pydf")
 	puts yellow("Disk capacity:")
 	system("pydf")
 	puts

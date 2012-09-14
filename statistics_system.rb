@@ -283,10 +283,19 @@ puts; puts
 # -------------------------
 # --- system disk usage ---
 # -------------------------
-if which("pydf")
+miss = []
+if not which("pydf")
+	puts yellow("Disk capacity:")
 	system("pydf")
 	puts
+elsif which("df") and which("grep")
+	puts yellow("Disk capacity:")
+	system("df -h | grep '' -m1; df -h | grep '/dev/' --color=none")
+	puts
+else
+	miss << "pydf"
 end
+
 
 # ---------------
 # --- battery ---
@@ -307,18 +316,14 @@ end
 #	end
 #	puts out
 #	puts
+#else
+#	miss << "acpi"
 #end
 
 
 # ------------------------------
 # --- check for dependencies ---
 # ------------------------------
-miss = []
-#comm = %w[ pydf acpi ]
-comm = %w[ pydf ]
-comm.each do |c|
-	if not which(c) then miss += [c] end
-end
 # print warning message about missing dependencies
 if miss.length > 0
 	print "warning: the following commands missing: "

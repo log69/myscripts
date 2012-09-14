@@ -253,28 +253,28 @@ puts; puts
 # --- processes in order of weighted means ---
 # --------------------------------------------
 c = []
-proc_list2 = []
+proc_new2 = []
 # calculate sum of separate value types (cpu, disk, mem etc.)
-l = proc_list.length
+l = proc_new.length
 for i2 in (1..4)
 	c[i2] = 1
 end
 for i in (0..l-1)
 	for i2 in (1..4)
-		c[i2] = c[i2].to_i + proc_list[i][i2]
+		c[i2] = c[i2].to_i + proc_new[i][i2]
 	end
 end
 for i in (0..l-1)
-	name   = proc_list[i][0]
+	name   = proc_new[i][0]
 	weight = 0
 	for i2 in (1..4)
-		weight += proc_list[i][i2].to_f / c[i2]
+		weight += proc_new[i][i2].to_f / c[i2]
 	end
-	proc_list2.push([weight, name])
+	proc_new2.push([weight, name])
 end
 # print process list
 puts blue("Processes with weighted order:")
-for i in proc_list2.sort.reverse[0..$num-1]
+for i in proc_new2.sort.reverse[0..$num-1]
 	print i[1] + "  "
 end
 puts; puts

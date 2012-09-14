@@ -12,6 +12,7 @@
 # depends: pydf (optional)
 # license: GPLv3+ <http://www.gnu.org/licenses/gpl.txt>
 # Andras Horvath <mail@log69.com>
+# Version: 0.3
 
 
 # constants

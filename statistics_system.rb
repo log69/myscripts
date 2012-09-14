@@ -1,16 +1,21 @@
 #!/usr/bin/env ruby
 # info: print overall system statistics
 #  summarizes the values of the separate processes with the same names
-#  cpu usage of processes show the used cpu since their start
-#  disk usage of processes show the average of read + written kilobytes
+#  cpu usage of processes shows the used cpu since their start
+#  disk usage of processes shows the average of read + written kilobytes
 #   since their start
+#  all io usage shows all the used I/O (disk, network, tty, stdout etc.)
+#   since their start
+#  also shows a final order of the most resource hungry processes
+#   based on the weighted mean of their statistics
 # platform: Linux only
-# depends: *acpi, *pydf (*optional dependencies)
+# depends: pydf (optional)
 # license: GPLv3+ <http://www.gnu.org/licenses/gpl.txt>
 # Andras Horvath <mail@log69.com>
 
+
 # constants
-$num = 16
+$num = 12
 
 # print colorized text
 def colorize(text, color_code) "\e[#{color_code}m#{text}\e[0m" end
@@ -105,10 +110,11 @@ proc_list = []
 Dir.foreach("/proc") do |file|
 	path = "/proc/" + file
 	if File.directory?(path) and file =~ /^\d+$/
-		
+
 		p_name = ""
 		p_cpu  = 0
 		p_disk = 0
+		p_io   = 0
 		p_mem  = 0
 
 		# get name and cpu usage
@@ -131,15 +137,23 @@ Dir.foreach("/proc") do |file|
 			p_disk += text.match("^write_bytes\:.*").to_s.match("[0-9]+").to_s.to_i
 		end
 
+		# get other io usage (includes network, tty, std etc.)
+		if File.readable?(path + "/io")
+			f = File.open(path + "/io", "r")
+			text = f.read; f.close
+			p_io  = text.match("^rchar\:.*" ).to_s.match("[0-9]+").to_s.to_i
+			p_io += text.match("^wchar\:.*").to_s.match("[0-9]+").to_s.to_i
+		end
+
 		# get mem usage
 		if File.readable?(path + "/status")
 			f = File.open(path + "/status", "r")
 			text = f.read; f.close
 			p_mem = text.match("^VmRSS\:.*").to_s.match("[0-9]+").to_s.to_i
 		end
-		
+
 		if p_name != ""
-			proc_list += [[p_name, p_cpu, p_mem, p_disk]] end
+			proc_list += [[p_name, p_cpu, p_mem, p_disk, p_io]] end
 	end
 end
 
@@ -160,6 +174,7 @@ while true
 			proc_new[c2][1] += t1[1]
 			proc_new[c2][2] += t1[2]
 			proc_new[c2][3] += t1[3]
+			proc_new[c2][4] += t1[4]
 		else
 			c2 += 1
 			proc_new[c2] = t1
@@ -213,6 +228,50 @@ end
 puts red("Disk usage (KB/s):")
 for i in proc_cur.sort.reverse[0..$num-1]
 	print i[1] + " (" + ("%.2f" % (i[0].to_f / sys_uptime)).to_s + ") "
+end
+puts; puts
+
+
+# --------------------
+# --- all io usage ---
+# --------------------
+# get disk list
+proc_cur = []
+for i in (0..proc_new.length-1)
+	proc_cur[i] = [proc_new[i][4] / 1024 / 1024, proc_new[i][0]]
+end
+# print disk list
+puts red("All I/O usage (MB, includes disk, network, tty, stdout etc.):")
+for i in proc_cur.sort.reverse[0..$num-1]
+	print i[1] + " (" + ("%.2f" % (i[0].to_f)).to_s + ") "
+end
+puts; puts
+
+
+# --------------------------------------------
+# --- processes in order of weighted means ---
+# --------------------------------------------
+c = []
+proc_list2 = []
+# calculate sum of separate value types (cpu, disk, mem etc.)
+l = proc_list.length
+for i in (0..l-1)
+	for i2 in (1..4)
+		c[i2] = c[i2].to_i + proc_list[i][i2]
+	end
+end
+for i in (0..l-1)
+	name   = proc_list[i][0]
+	weight = 0
+	for i2 in (1..4)
+		weight += proc_list[i][i2].to_f / c[i2]
+	end
+	proc_list2.push([weight, name])
+end
+# print process list
+puts blue("Processes with weighted order:")
+for i in proc_list2.sort.reverse[0..$num-1]
+	print i[1] + "  "
 end
 puts; puts
 

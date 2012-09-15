@@ -277,7 +277,8 @@ puts blue("Processes with weighted order:")
 for i in proc_new2.sort.reverse[0..$num-1]
 	print i[1] + "  "
 end
-puts; puts
+puts
+puts
 
 
 # -------------------------
@@ -285,18 +286,14 @@ puts; puts
 # -------------------------
 if which("df")
 	res = []
-	puts yellow("Disk capacity:")
+	# get info for "/dev/" only
 	`df -hP`.split("\n")[1..-1].each do |x|
-		# get info for "/dev/" only
 		if x.match(/^\/dev\//)
 			res.push(x)
 		end
 	end
-	# get max line length to print in columns
-	l = 0
-	res.each do |x|
-		l2 = x.length
-		if l < l2 then l = l2 end
+	if res.length > 0
+		puts yellow("Disk capacity:")
 	end
 	res.each do |x|
 		z = x.split

@@ -9,10 +9,10 @@
 #  also shows a final order of the most resource hungry processes
 #   based on the weighted mean of their statistics
 # platform: Linux only
-# depends: pydf (optional)
+# depends: df command
 # license: GPLv3+ <http://www.gnu.org/licenses/gpl.txt>
 # Andras Horvath <mail@log69.com>
-# Version: 0.3
+# Version: 0.4
 
 
 # constants
@@ -283,50 +283,36 @@ puts; puts
 # -------------------------
 # --- system disk usage ---
 # -------------------------
-miss = []
-if which("pydf")
+if which("df")
+	res = []
 	puts yellow("Disk capacity:")
-	system("pydf")
-	puts
-elsif which("df") and which("grep")
-	puts yellow("Disk capacity:")
-	system("df -h | grep '' -m1; df -h | grep '/dev/' --color=none")
-	puts
-else
-	miss << "pydf"
+	`df -hP`.split("\n")[1..-1].each do |x|
+		# get info for "/dev/" only
+		if x.match(/^\/dev\//)
+			res.push(x)
+		end
+	end
+	# get max line length to print in columns
+	l = 0
+	res.each do |x|
+		l2 = x.length
+		if l < l2 then l = l2 end
+	end
+	res.each do |x|
+		z = x.split
+		# get percentage
+		y = z[4].scan(/[0-9]+/)[0].to_i
+		# create bar
+		n = bar * y / 100 / 2
+		s = "[" + "#" * n + "." * (bar / 2 - n) + "] "
+		# print it in red if above 95%
+		if y >= 95
+			print red(s)
+		else
+			print yellow(s)
+		end
+		# print disk info
+		puts "#{z[0]} #{z[5]} #{z[1]} #{z[4]}"
+	end
 end
 
-
-# ---------------
-# --- battery ---
-# ---------------
-#if which("acpi")
-#	bar = 40
-#	out = `acpi -V 2>/dev/null`
-#	if out.match(/^Battery.*[0-9]+/).to_s != "" then
-#		bat = out.scan(/[0-9]+\%/)
-#		len = bat[0].match(/[0-9]+/).to_s.to_i
-#		if len < 0   then len = 0   end
-#		if len > 100 then len = 100 end
-#		text = "Battery: [" + "#" * (len * bar / 100) + \
-#			"." * ((100 - len) * bar / 100) + "]"
-#		if len >= 20 then puts green(text)
-#		else              puts red(text)
-#		end
-#	end
-#	puts out
-#	puts
-#else
-#	miss << "acpi"
-#end
-
-
-# ------------------------------
-# --- check for dependencies ---
-# ------------------------------
-# print warning message about missing dependencies
-if miss.length > 0
-	print "warning: the following commands missing: "
-	print miss.join(", ")
-	puts
-end

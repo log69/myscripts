@@ -11,8 +11,8 @@
 # platform: Linux only
 # depends: df command
 # license: GPLv3+ <http://www.gnu.org/licenses/gpl.txt>
+# version: 0.4
 # Andras Horvath <mail@log69.com>
-# Version: 0.4
 
 
 # constants

@@ -287,7 +287,7 @@ puts
 if which("df")
 	res = []
 	# get info for "/dev/" only
-	`df -hP`.split("\n")[1..-1].each do |x|
+	`df -hP 2>/dev/null`.split("\n")[1..-1].each do |x|
 		if x.match(/^\/dev\//)
 			res.push(x)
 		end

@@ -26,6 +26,15 @@ def shuffle(array)
 end
 
 
+# get a specified length of random number as a string
+# len means an integer of 4 or greater
+def get_number(len)
+	l = len.to_i
+	l = 4 if l < 4
+	return (1..l).map {rand 10}.join
+end
+
+
 # get a strong password of a specified length
 # len means an integer of 4 or greater
 #
@@ -34,12 +43,12 @@ end
 def get_password_strong(len)
 
 	pass = ""
-	
+
 	# choose chars from ASCII code 33 - 126
 	len.times do
 		pass += (rand(126+1-33) + 33).chr
 	end
-	
+
 	return pass
 end
 
@@ -256,7 +265,9 @@ end
 if ARGV.length == 0
 	# get pronounceable, simple and strong passwords and print them
 	10.times do
-		print 	get_password_pron(8) 	+ " " + \
+		print 	get_number(4)			+ " " + \
+				get_number(6)			+ " " + \
+				get_password_pron(8) 	+ " " + \
 				get_password_pron(10)	+ " " + \
 				get_password(8)			+ " " + \
 				get_password(10)		+ " " + \
@@ -270,7 +281,8 @@ else
 	# argument must be a number greater than 4
 	if n >= 4
 		10.times do
-		print 	get_password_pron(n) 	+ " " + \
+		print 	get_number(n)			+ " " + \
+				get_password_pron(n) 	+ " " + \
 				get_password(n)			+ " " + \
 				get_password_strong(n)
 		puts

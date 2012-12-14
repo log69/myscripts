@@ -8,7 +8,7 @@ DIR="/snapshot"
 # number of snapshots to leave for daily
 ND="7"
 # for monthly
-NM="3"
+NM="1"
 
 # create daily snapshot
 mkdir -p "$DIR"

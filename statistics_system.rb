@@ -67,9 +67,12 @@ end
 # print hours of uptime
 print ("%02d" % sys_uptime_hour).to_s + ":" + ("%02d" % sys_uptime_min).to_s + ", "
 # print times of waking up
-f = File.open("/sys/power/wakeup_count")
-text = f.read; f.close
-print "awaken #{text[/[0-9]+/]}x, "
+f_wake = "/sys/power/wakeup_count"
+if File.file? f_wake
+	f = File.open(f_wake)
+	text = f.read; f.close
+	print "awaken #{text[/[0-9]+/]}x, "
+end
 # get load of system
 f = File.open("/proc/loadavg")
 text = f.read; f.close

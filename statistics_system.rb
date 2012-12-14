@@ -66,6 +66,10 @@ if sys_uptime_day > 0
 end
 # print hours of uptime
 print ("%02d" % sys_uptime_hour).to_s + ":" + ("%02d" % sys_uptime_min).to_s + ", "
+# print times of waking up
+f = File.open("/sys/power/wakeup_count")
+text = f.read; f.close
+print "awaken #{text[/[0-9]+/]}x, "
 # get load of system
 f = File.open("/proc/loadavg")
 text = f.read; f.close

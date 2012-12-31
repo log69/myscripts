@@ -46,7 +46,7 @@ fi
 # mount encfs in reverse mode to see files encrypted
 ENCRYPTED_DIR=$(mktemp -d)
 trap "{ fusermount -u "$ENCRYPTED_DIR" &>/dev/null; rmdir "$ENCRYPTED_DIR" &>/dev/null; }" 0 1 2 3 5 15
-encfs --reverse --extpass "echo $PASS" "$BACKUP_DIR" "$ENCRYPTED_DIR" || exit 1
+encfs --reverse --standard --extpass "echo $PASS" "$BACKUP_DIR" "$ENCRYPTED_DIR" || exit 1
 
 # sync datas to remote machine
 rsync -avz --progress "$EXCLUDE_LIST" "$ENCRYPTED_DIR"/ "$REMOTE_DIR"/

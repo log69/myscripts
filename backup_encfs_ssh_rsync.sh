@@ -33,23 +33,36 @@ echo -n "enter password: "
 read -s PASS
 echo
 
+# create dir for encrypted view
+ENCRYPTED_DIR=$(mktemp -d)
+trap "{ fusermount -u "$ENCRYPTED_DIR" &>/dev/null; rmdir "$ENCRYPTED_DIR" &>/dev/null; }" 0 1 2 3 5 15
+
 # any dirs to exclude specified (more than 2 arguments)?
 if [ $# -gt 2 ]
 then
 	# read args from 3rd only and store dir name with --exclude option of rsync
 	EXCLUDE_LIST=$(echo $@ | tr -s " " "\n" | tail -n+3 | while read DIR; do
 		N=$(encfsctl encode --extpass "echo $PASS" "$BACKUP_DIR" "$DIR")
-		echo -n " --exclude \"$N\""
+		echo -n " --exclude=\"$N\""
 	done)
 fi
 
 # mount encfs in reverse mode to see files encrypted
-ENCRYPTED_DIR=$(mktemp -d)
-trap "{ fusermount -u "$ENCRYPTED_DIR" &>/dev/null; rmdir "$ENCRYPTED_DIR" &>/dev/null; }" 0 1 2 3 5 15
 encfs --reverse --standard --extpass "echo $PASS" "$BACKUP_DIR" "$ENCRYPTED_DIR" || exit 1
 
+# change current dir to backup dir
+CDIR=$(pwd)
+cd "$ENCRYPTED_DIR"
+
 # sync datas to remote machine
-rsync -avz --progress "$EXCLUDE_LIST" "$ENCRYPTED_DIR"/ "$REMOTE_DIR"/
+rsync -avz --progress --delete --delete-excluded "$EXCLUDE_LIST" "$ENCRYPTED_DIR"/ "$REMOTE_DIR"/
+
+# sync encfs xml option file to remote machine
+# this must be the latter operation, otherwise the former one would delete it everytime
+rsync -avz --progress "$BACKUP_DIR"/.encfs6.xml "$REMOTE_DIR"/
+
+# resture current dir
+cd "$CDIR"
 
 # unmount dir
 fusermount -u "$ENCRYPTED_DIR" &>/dev/null

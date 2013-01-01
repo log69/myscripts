@@ -8,6 +8,10 @@
 #   - exclude directories must be relative to local directory
 # usage: command LOCAL_DIR REMOTE_DIR [DIR1_TO_EXCLUDE DIR2_TO_EXCLUDE ...]
 # example: backup_encfs_ssh_rsync.sh /home/user user@server.com:2222/home/user/backup .bashrc pictures/private
+# recover the datas from the encrypted directory (/crypt):
+# mkdir /datas
+# encfs /crypt /datas
+
 
 # check if necessary commands installed?
 if ! which encfs &>/dev/null; then echo "error: encfs command missing"; exit 1; fi
@@ -58,3 +62,4 @@ rsync -avz --progress "$BACKUP_DIR"/.encfs6.xml --delete --delete-excluded $EXCL
 # unmount dir
 fusermount -u "$ENCRYPTED_DIR" &>/dev/null
 rmdir "$ENCRYPTED_DIR" &>/dev/null
+

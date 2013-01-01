@@ -40,7 +40,7 @@ then
 	# read args from 3rd only and store dir name with --exclude option of rsync
 	EXCLUDE_LIST=$(echo $@ | tr -s " " "\n" | tail -n+3 | while read DIR; do
 		N=$(encfsctl encode --extpass "echo $PASS" "$BACKUP_DIR" "$DIR")
-		echo -n " --exclude=\"$N\""
+		echo -n " --exclude=$N"
 	done)
 fi
 

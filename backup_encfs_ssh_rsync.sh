@@ -51,12 +51,9 @@ trap "{ fusermount -u "$ENCRYPTED_DIR" &>/dev/null; rmdir "$ENCRYPTED_DIR" &>/de
 # mount encfs in reverse mode to see files encrypted
 encfs --reverse --standard --extpass "echo $PASS" "$BACKUP_DIR" "$ENCRYPTED_DIR" || exit 1
 
-# sync datas to remote machine
-rsync -avz --progress --delete --delete-excluded $EXCLUDE_LIST "$ENCRYPTED_DIR"/ "$REMOTE_DIR"/
-
-# sync encfs xml option file to remote machine
-# this must be the latter operation, otherwise the former one would delete it everytime
-rsync -avz --progress "$BACKUP_DIR"/.encfs6.xml "$REMOTE_DIR"/
+# sync datas and encfs xml option file to remote machine
+# xml option file must stand first to not delete it
+rsync -avz --progress "$BACKUP_DIR"/.encfs6.xml --delete --delete-excluded $EXCLUDE_LIST "$ENCRYPTED_DIR"/ "$REMOTE_DIR"/
 
 # unmount dir
 fusermount -u "$ENCRYPTED_DIR" &>/dev/null

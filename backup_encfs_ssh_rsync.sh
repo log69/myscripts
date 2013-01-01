@@ -7,10 +7,10 @@
 #   - remote directory must be compliant with the Rsync format
 #   - exclude directories must be relative to local directory
 # usage: command LOCAL_DIR REMOTE_DIR [DIR1_TO_EXCLUDE DIR2_TO_EXCLUDE ...]
-# example: backup_encfs_ssh_rsync.sh /home/user user@server.com:2222/home/user/backup .bashrc pictures/private
-# recover the datas from the encrypted directory (/crypt):
-# mkdir /datas
-# encfs /crypt /datas
+# example: backup_encfs_ssh_rsync.sh /home/user user@server.com:backup .bashrc pictures/private
+# recover the data from the encrypted directory (/crypt):
+# mkdir /data
+# encfs /crypt /data
 
 
 # check if necessary commands installed?
@@ -55,7 +55,7 @@ trap "{ fusermount -u "$ENCRYPTED_DIR" &>/dev/null; rmdir "$ENCRYPTED_DIR" &>/de
 # mount encfs in reverse mode to see files encrypted
 encfs --reverse --standard --extpass "echo $PASS" "$BACKUP_DIR" "$ENCRYPTED_DIR" || exit 1
 
-# sync datas and encfs xml option file to remote machine
+# sync data and encfs xml option file to remote machine
 # xml option file must stand first to not delete it
 rsync -avz --progress "$BACKUP_DIR"/.encfs6.xml --delete --delete-excluded $EXCLUDE_LIST "$ENCRYPTED_DIR"/ "$REMOTE_DIR"/
 

@@ -32,6 +32,8 @@ BACKUP_DIR=$(readlink -f $1)
 REMOTE_DIR="$2"
 EXCLUDE_LIST=""
 
+echo "$BACKUP_DIR" "$REMOTE_DIR"; exit
+
 # get password
 echo -n "enter password: "
 read -s PASS
@@ -57,7 +59,7 @@ encfs --reverse --standard --extpass "echo $PASS" "$BACKUP_DIR" "$ENCRYPTED_DIR"
 
 # sync data and encfs xml option file to remote machine
 # xml option file must stand first to not delete it
-rsync -avz --progress "$BACKUP_DIR"/.encfs6.xml --delete --delete-excluded $EXCLUDE_LIST "$ENCRYPTED_DIR" "$REMOTE_DIR"
+rsync -avz --progress "$BACKUP_DIR"/.encfs6.xml --delete --delete-excluded $EXCLUDE_LIST "$ENCRYPTED_DIR"/ "$REMOTE_DIR"/
 
 # unmount dir
 fusermount -u "$ENCRYPTED_DIR" &>/dev/null

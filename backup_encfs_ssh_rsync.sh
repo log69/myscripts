@@ -32,8 +32,6 @@ BACKUP_DIR=$(readlink -f $1)
 REMOTE_DIR="$2"
 EXCLUDE_LIST=""
 
-echo "$BACKUP_DIR" "$REMOTE_DIR"; exit
-
 # get password
 echo -n "enter password: "
 read -s PASS

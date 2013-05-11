@@ -112,14 +112,14 @@ def get_password_pron(len)
 	# all available chars to choose from
 	# "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPRSTUVWXYZ0123456789"
 	# exception chars
-	# "o|O|0|Q|1|i|j|l|I|z|Z|y|Y|g|q|9|G|6|B|8"
+	# "o|O|0|Q|1|i|j|l|I|y|Y|g|q|9|G|6|B|8"
 	# "z" and "y" are exceptions because of querty key maps
 	ch = "abcdefhkmnprstuvwxACDEFHJKLMNPRSTUVWX23457".split("")
-	ch_low = "abcdefhkmnprstuvwx".split("")
-	ch_upp = "ACDEFHJKLMNPRSTUVWX".split("")
+	ch_low = "abcdefhkmnprstuvwxz".split("")
+	ch_upp = "ACDEFHJKLMNPRSTUVWXZ".split("")
 	ch_num = "23457".split("")
 	ch_vow = "aeu".split("")
-	ch_con = "bcdfhkmnprstvwx".split("")
+	ch_con = "bcdfhkmnprstvwxz".split("")
 	ch_con_double = %w[ ch kh ph sh th ]
 
 	# pass should have at least 4 chars

@@ -6,14 +6,15 @@
 # license: GPLv3+ <http://www.gnu.org/licenses/gpl.txt>
 # Andras Horvath <mail@log69.com>
 
-#require 'rubygems'
+require 'rubygems'
 require 'sdl'
+require 'rubysdl'
 
 # consts
 screen_width     = 1000
 screen_height    = 700
 num_of_points    = 500
-speed_of_points  = 5
+speed_of_points  = 2
 radius_of_points = 3
 
 # init SDL
@@ -57,8 +58,10 @@ while running
 
 	# draw points
 	for i in (1..num_of_points)
-		#screen.put_pixel points[i][0], points[i][1], FGCOLOR end
-		screen.draw_filled_circle points[i][0], points[i][1], radius_of_points, FGCOLOR end
+#		screen.put_pixel points[i][0], points[i][1], FGCOLOR
+#		screen.draw_filled_circle points[i][0], points[i][1], radius_of_points, FGCOLOR
+		screen.draw_circle points[i][0], points[i][1], radius_of_points, FGCOLOR, true #, true
+	end
 
 	# update screen
 	screen.flip

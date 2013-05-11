@@ -25,7 +25,7 @@ if [ $# -lt 1 ]; then echo "usage: command LOCAL_DIR REMOTE_DIR [DIR1_TO_EXCLUDE
 if [ $# -lt 2 ]; then echo "error: too few arguments"; exit 1; fi
 
 # is user part of group fuse?
-if ! grep fuse /etc/group | grep -q "$USER"; then echo "error: user must be in group fuse"; exit 1; fi
+#if ! grep fuse /etc/group | grep -q "$USER"; then echo "error: user must be in group fuse"; exit 1; fi
 
 # store argument values
 BACKUP_DIR=$(readlink -f $1)

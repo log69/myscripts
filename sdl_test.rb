@@ -135,19 +135,12 @@ end
 s = Screen.new(600, 400)
 s.create
 
-10.times{ s.circle(rand(s.width), rand(s.height), rand(50)) }
-10.times{ s.line(rand(s.width), rand(s.height), rand(s.width), rand(s.height)) }
+s.line(130, 100, 450, 210)
+s.circle(130, 100, 50)
 s.show
 
-# wait for escape key or window close to quit
 e = []
 while e != [:quit] and e != [:escape] do
-
-	if e[0] == :mouse
-		s.circle(e[1], e[2], rand(50))
-		s.show
-	end
-
 	e = s.event
 	sleep 0.01
 end

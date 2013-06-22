@@ -130,11 +130,6 @@ class Screen
 end
 
 
-# consts
-$space_size		= 1000
-$persp			= 500
-
-
 class Cube
 	# set initial properties for object
 	def initialize(center_x = 0, center_y = 0, center_z = 0, size = 1)
@@ -287,6 +282,10 @@ end
 # init
 s = Screen.new(1000, 700)
 s.create
+
+# consts
+$space_size		= 1000
+$persp			= 500
 
 # create objects
 cube1 = Cube.new(0, 0, 0, 200)

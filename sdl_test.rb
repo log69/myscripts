@@ -140,7 +140,7 @@ s.circle(130, 100, 50)
 s.show
 
 e = []
-while e != [:quit] and e != [:escape] do
+while e[0] != :quit and e[0] != :escape do
 	e = s.event
 	sleep 0.01
 end

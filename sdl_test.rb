@@ -139,6 +139,7 @@ s.line(130, 100, 450, 210)
 s.circle(130, 100, 50)
 s.show
 
+# wait for escape key or window close to quit
 e = []
 while e[0] != :quit and e[0] != :escape do
 	e = s.event

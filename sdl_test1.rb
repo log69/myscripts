@@ -141,7 +141,7 @@ s.show
 
 # wait for escape key or window close to quit
 e = []
-while e != [:quit] and e != [:escape] do
+while e[0] != :quit and e[0] != :escape do
 
 	if e[0] == :mouse
 		s.circle(e[1], e[2], rand(50))

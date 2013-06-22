@@ -48,13 +48,10 @@ require 'sdl'
 class Screen
 	attr_reader	:width, :height
 
+	# init and show screen
 	def initialize(width = 800, height = 600)
 		@width = width
 		@height = height
-	end
-
-	# init and show screen
-	def create
 		SDL.init SDL::INIT_VIDEO
 		@screen = SDL::set_video_mode @width, @height, 24, SDL::SWSURFACE
 		@color_bg = @screen.format.mapRGB 240, 240, 240
@@ -281,7 +278,6 @@ end
 
 # init
 s = Screen.new(1000, 700)
-s.create
 
 # consts
 $space_size		= 1000

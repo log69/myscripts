@@ -10,7 +10,7 @@
 #
 # on Debian or Ubuntu:
 # sudo apt-get install libsdl-sge
-# sudo gem install rubsdl
+# sudo gem install rubysdl
 #
 # on Fedora, RHEL or clones:
 # su -c "yum group install 'Development Tools'"

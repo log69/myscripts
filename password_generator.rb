@@ -69,10 +69,10 @@ def get_password(len)
 	# exception chars
 	# "o|O|0|Q|1|i|j|l|I|z|Z|y|Y|g|q|9|G|6|B|8"
 	# "z" and "y" are exceptions because of querty key maps
-	ch = "abcdefhkmnprstuvwxABCDEFHJKLMNPRSTUVWX234578".split("")
-	ch_low = "abcdefhkmnprstuvwx".split("")
-	ch_upp = "ACDEFHJKLMNPRSTUVWX".split("")
-	ch_num = "23457".split("")
+	ch = "abcdefhkmnprstuvwxABCDEFHJKLMNPRSTUVWX234578".chars.to_a
+	ch_low = "abcdefhkmnprstuvwx".chars.to_a
+	ch_upp = "ACDEFHJKLMNPRSTUVWX".chars.to_a
+	ch_num = "23457".chars.to_a
 
 	# pass should have at least 4 chars
 	if len < 4 then return "" end
@@ -91,8 +91,8 @@ def get_password(len)
 	end
 
 	# shuffle the order of chars in result
-	#return pass.split("").shuffle.join
-	return shuffle(pass.split("")).join
+	#return pass.chars.to_a.shuffle.join
+	return shuffle(pass.chars.to_a).join
 end
 
 
@@ -114,12 +114,12 @@ def get_password_pron(len)
 	# exception chars
 	# "o|O|0|Q|1|i|j|l|I|y|Y|g|q|9|G|6|B|8"
 	# "z" and "y" are exceptions because of querty key maps
-	ch = "abcdefhkmnprstuvwxACDEFHJKLMNPRSTUVWX23457".split("")
-	ch_low = "abcdefhkmnprstuvwxz".split("")
-	ch_upp = "ACDEFHJKLMNPRSTUVWXZ".split("")
-	ch_num = "23457".split("")
-	ch_vow = "aeu".split("")
-	ch_con = "bcdfhkmnprstvwxz".split("")
+	ch = "abcdefhkmnprstuvwxACDEFHJKLMNPRSTUVWX23457".chars.to_a
+	ch_low = "abcdefhkmnprstuvwxz".chars.to_a
+	ch_upp = "ACDEFHJKLMNPRSTUVWXZ".chars.to_a
+	ch_num = "23457".chars.to_a
+	ch_vow = "aeu".chars.to_a
+	ch_con = "bcdfhkmnprstvwxz".chars.to_a
 	ch_con_double = %w[ ch kh ph sh th ]
 
 	# pass should have at least 4 chars

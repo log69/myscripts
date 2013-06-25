@@ -92,7 +92,11 @@ class Screen
 
 	# draw a line
 	def line(x1, y1, x2, y2)
-		@screen.drawAALine x1, y1, x2, y2, @color_fg
+		#@screen.drawAALine x1, y1, x2, y2, @color_fg
+		@screen.drawAALine x1-0, y1-0, x2-0, y2-0, @color_fg
+		@screen.drawAALine x1-0, y1-1, x2-0, y2-1, @color_fg
+		@screen.drawAALine x1-1, y1-0, x2-1, y2-0, @color_fg
+		@screen.drawAALine x1-1, y1-1, x2-1, y2-1, @color_fg
 	end
 
 	# draw a rectangle
@@ -305,7 +309,7 @@ while e[0] != :quit and e[0] != :escape do
 	cube2.rotate(0.03, 0.06, 0.04)
 	cube2.rotate_origo(0.00, -0.01, 0.00)
 
-	cube2.draw(s)
+#	cube2.draw(s)
 
 	# show drawing
 	s.show

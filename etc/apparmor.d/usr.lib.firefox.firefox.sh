@@ -157,8 +157,8 @@
 
   /tmp/ r,
   /tmp/* rw,
-  /tmp/orbit-andras/ rw,
-  /tmp/orbit-andras/* rw,
+  /tmp/orbit-*/ rw,
+  /tmp/orbit-*/* rw,
   /tmp/plugtmp/ rw,
   /tmp/plugtmp/** rw,
   /var/tmp/ r,
@@ -179,8 +179,5 @@
 
   /home/*/Downloads/ r,
   /home/*/Downloads/** rw,
-
-  /home/andras/Desktop/ r,
-  /home/andras/Desktop/** rw,
 
 }

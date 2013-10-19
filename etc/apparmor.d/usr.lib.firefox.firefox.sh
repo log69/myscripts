@@ -3,6 +3,9 @@
 # usage:
 #   sudo cp sr.lib.firefox.firefox.sh /etc/apparmor.d
 #   sudo aa-enforce /etc/apparmor.d/usr.lib.firefox.firefox.sh
+# print deny messages:
+#   tail -n1000 -f /var/log/syslog | grep -iE "firefox.*denied" | \
+#   grep -iEv "dbus/system_bus_socket|dbus/machine-id|config/ibus/bus/"
 # note:
 #   error message boxes may pop up when running firefox
 #   this is because firefox is not given access to dbus

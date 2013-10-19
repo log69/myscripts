@@ -45,6 +45,7 @@
   /etc/gnome-vfs-2.0/modules/ r,
   /etc/gnome-vfs-2.0/modules/** r,
   /etc/gnome/defaults.list r,
+  /etc/group r,
   /etc/host.conf r,
   /etc/hosts r,
   /etc/ld.so.cache mr,
@@ -162,8 +163,8 @@
   /tmp/* rw,
   /tmp/orbit-*/ rw,
   /tmp/orbit-*/* rw,
-  /tmp/plugtmp/ rw,
-  /tmp/plugtmp/** rw,
+  /tmp/plugtmp*/ rw,
+  /tmp/plugtmp*/** rw,
   /var/tmp/ r,
 
   /usr/bin/pulseaudio rix,

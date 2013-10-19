@@ -1,3 +1,13 @@
+# info: strict apparmor firefox profile
+# platform: ubuntu 13.10 x64
+# usage:
+#   sudo cp sr.lib.firefox.firefox.sh /etc/apparmor.d
+#   sudo aa-enforce /etc/apparmor.d/usr.lib.firefox.firefox.sh
+# note:
+#   error message boxes may pop up when running firefox
+#   this is because firefox is not given access to dbus
+
+
 /usr/lib/firefox/firefox.sh {
 
   capability sys_ptrace,
@@ -163,8 +173,10 @@
   /var/cache/fontconfig/ r,
   /var/cache/fontconfig/** r,
 
+
   /home/*/Downloads/ r,
   /home/*/Downloads/** rw,
+
   /home/andras/Desktop/ r,
   /home/andras/Desktop/** rw,
 

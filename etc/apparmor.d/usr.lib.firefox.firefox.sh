@@ -32,7 +32,7 @@
   /dev/null rw,
   /dev/tty r,
   /dev/urandom r,
-  /dev/snd/* r,
+  /dev/snd/* rw,
   /dev/log rw,
 
   /etc/drirc r,

@@ -67,6 +67,7 @@
   /home/*/.Xauthority r,
   /home/*/.adobe/ r,
   /home/*/.adobe/** r,
+  /home/*/.cache/event-sound-cache.* rw,
   /home/*/.cache/fontconfig/ rwk,
   /home/*/.cache/fontconfig/** rwk,
   /home/*/.cache/mozilla/firefox/ rwk,

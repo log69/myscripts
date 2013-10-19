@@ -180,4 +180,7 @@
   /home/*/Downloads/ r,
   /home/*/Downloads/** rw,
 
+#  /home/*/Desktop/ r,
+#  /home/*/Desktop/** rw,
+
 }

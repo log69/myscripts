@@ -1,5 +1,5 @@
 # info: strict apparmor firefox profile
-# platform: ubuntu 13.10 x64
+# platform: ubuntu 13.04, 13.10 x64
 # usage:
 #   sudo cp sr.lib.firefox.firefox.sh /etc/apparmor.d
 #   sudo aa-enforce /etc/apparmor.d/usr.lib.firefox.firefox.sh

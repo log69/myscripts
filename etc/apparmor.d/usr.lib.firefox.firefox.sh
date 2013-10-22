@@ -6,7 +6,11 @@
 # print deny messages:
 #   tail -n1000 -f /var/log/syslog | grep -iE "firefox.*denied" | \
 #   grep -iEv "dbus/system_bus_socket|dbus/machine-id|config/ibus/bus/"
-# note:
+# install utils:
+#   sudo apt-get install apparmor-utils apparmor-profiles apparmor-notify
+# access deny notifications:
+#   aa-notify -p
+# remarks:
 #   error message boxes may pop up when running firefox
 #   this is because firefox is not given access to dbus
 

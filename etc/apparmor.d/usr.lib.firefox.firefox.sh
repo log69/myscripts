@@ -1,16 +1,12 @@
 # info: strict apparmor firefox profile
-# platform: ubuntu 13.04, 13.10 x64
+# platform: ubuntu 13.10 x64
 # usage:
 #   sudo cp sr.lib.firefox.firefox.sh /etc/apparmor.d
 #   sudo aa-enforce /etc/apparmor.d/usr.lib.firefox.firefox.sh
 # print deny messages:
 #   tail -n1000 -f /var/log/syslog | grep -iE "firefox.*denied" | \
 #   grep -iEv "dbus/system_bus_socket|dbus/machine-id|config/ibus/bus/"
-# install utils:
-#   sudo apt-get install apparmor-utils apparmor-profiles apparmor-notify
-# access deny notifications:
-#   aa-notify -p
-# remarks:
+# note:
 #   error message boxes may pop up when running firefox
 #   this is because firefox is not given access to dbus
 
@@ -191,5 +187,7 @@
 
 #  /home/*/Desktop/ r,
 #  /home/*/Desktop/** rw,
+
+  deny /var/lib/dbus/machine-id r,
 
 }

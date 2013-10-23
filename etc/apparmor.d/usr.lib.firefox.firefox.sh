@@ -189,5 +189,7 @@
 #  /home/*/Desktop/** rw,
 
   deny /var/lib/dbus/machine-id r,
+  deny /home/*/.config/ibus/bus/ rw,
+  deny /home/*/.config/ibus/bus/** rw,
 
 }

@@ -4,8 +4,7 @@
 #   sudo cp sr.lib.firefox.firefox.sh /etc/apparmor.d
 #   sudo aa-enforce /etc/apparmor.d/usr.lib.firefox.firefox.sh
 # print deny messages:
-#   tail -n1000 -f /var/log/syslog | grep -iE "firefox.*denied" | \
-#   grep -iEv "dbus/system_bus_socket|dbus/machine-id|config/ibus/bus/"
+#   tail -n1000 -f /var/log/syslog | grep -iE "firefox.*denied"
 # note:
 #   error message boxes may pop up when running firefox
 #   this is because firefox is not given access to dbus
@@ -168,6 +167,7 @@
   /tmp/orbit-*/* rw,
   /tmp/plugtmp*/ rw,
   /tmp/plugtmp*/** rw,
+  /var/tmp/ r,
   /var/tmp/etilqs_* rw,
 
   /usr/bin/pulseaudio rix,
@@ -187,8 +187,8 @@
   /home/*/Downloads/ r,
   /home/*/Downloads/** rw,
 
-#  /home/*/Desktop/ r,
-#  /home/*/Desktop/** rw,
+  /home/*/Desktop/ r,
+  /home/*/Desktop/** rw,
 
   deny /var/lib/dbus/machine-id r,
   deny /home/*/.config/ibus/bus/ rw,

@@ -56,6 +56,8 @@
   /etc/mime.types r,
   /etc/nsswitch.conf r,
   /etc/passwd r,
+  /etc/pkcs11/modules/ r,
+  /etc/pkcs11/modules/* r,
   /etc/pulse/ r,
   /etc/pulse/* r,
   /etc/sound/events/ r,
@@ -166,7 +168,7 @@
   /tmp/orbit-*/* rw,
   /tmp/plugtmp*/ rw,
   /tmp/plugtmp*/** rw,
-  /var/tmp/ r,
+  /var/tmp/etilqs_* rw,
 
   /usr/bin/pulseaudio rix,
   /usr/bin/update-mime-database rix,

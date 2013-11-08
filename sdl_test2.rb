@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # info: Screen class for simple 2D graphics using SDL
-# depends: libsdl-ruby libsdl-dev
+# depends: libsdl-ruby
 # original example code taken from:
 # http://lorenzod8n.wordpress.com/2007/05/30/ruby-meet-sdl/
 # license: GPLv3+ <http://www.gnu.org/licenses/gpl.txt>
@@ -9,7 +9,7 @@
 # SDL INSTALL:
 #
 # on Debian or Ubuntu:
-# sudo apt-get install libsdl-sge
+# sudo apt-get install libsdl-sge libsdl-sge-dev libsdl-dev
 # sudo gem install rubysdl
 #
 # on Fedora, RHEL or clones:

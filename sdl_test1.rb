@@ -1,6 +1,6 @@
 #!/usr/bin/env ruby
 # info: Screen class for simple 2D graphics using SDL
-# depends: libsdl-ruby
+# depends: libsdl-ruby libsdl-dev
 # original example code taken from:
 # http://lorenzod8n.wordpress.com/2007/05/30/ruby-meet-sdl/
 # license: GPLv3+ <http://www.gnu.org/licenses/gpl.txt>

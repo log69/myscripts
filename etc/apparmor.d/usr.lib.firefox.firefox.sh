@@ -75,6 +75,8 @@
   /home/*/.cache/fontconfig/** rwk,
   /home/*/.cache/mozilla/firefox/ rwk,
   /home/*/.cache/mozilla/firefox/** rwk,
+  /home/*/.cache/thumbnails rw,
+  /home/*/.cache/thumbnails/** rw,
   /home/*/.config/dconf/user r,
   /home/*/.config/gtk-2.0/ r,
   /home/*/.config/gtk-2.0/** rw,

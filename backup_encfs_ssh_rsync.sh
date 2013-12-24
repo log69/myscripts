@@ -10,7 +10,7 @@
 # example: backup_encfs_ssh_rsync.sh /home/user user@server.com:backup .bashrc pictures/private
 # recover the data from the encrypted directory (/crypt):
 # mkdir /data
-# encfs /crypt /data
+# su -c "encfs --public /crypt /data"
 
 
 # check if necessary commands installed?

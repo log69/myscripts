@@ -16,7 +16,7 @@
 
 
 # constants
-$num = 10
+$num = 8
 
 # print colorized text
 def colorize(text, color_code) "\e[#{color_code}m#{text}\e[0m" end
@@ -88,16 +88,13 @@ print blue("Memory (MB): ")
 file = File.open("/proc/meminfo", "r")
 text = file.read
 file.close
-text = text.gsub(/ kB$/, "")
-text = text.gsub(/\: */, " ")
-text = text.split("\n")[0..4]
 
 bar = 40
-mem_total   = text[0].split[1].to_i / 1024
-mem_free    = text[1].split[1].to_i / 1024
-mem_buffers = text[2].split[1].to_i / 1024
-mem_cached  = text[3].split[1].to_i / 1024
-mem_swap    = text[4].split[1].to_i / 1024
+mem_total   = text[/^memtotal.*/i][/[0-9]+/].to_i / 1024
+mem_free    = text[/^memfree.*/i][/[0-9]+/].to_i / 1024
+mem_buffers = text[/^buffers.*/i][/[0-9]+/].to_i / 1024
+mem_cached  = text[/^cached.*/i][/[0-9]+/].to_i / 1024
+mem_swap    = text[/^swaptotal.*/i][/[0-9]+/].to_i / 1024
 mem_used    = mem_total - mem_free - mem_buffers - mem_cached
 
 print blue("[" + "#" * (bar * mem_used / mem_total) \

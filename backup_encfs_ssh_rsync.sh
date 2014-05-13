@@ -6,7 +6,7 @@
 #   - user must be part of group fuse
 #   - remote directory must be compliant with the Rsync format
 #   - exclude directories must be relative to local directory
-# usage: command LOCAL_DIR REMOTE_DIR [DIR1_TO_EXCLUDE DIR2_TO_EXCLUDE ...]
+# usage: command [--password="xxxx"] LOCAL_DIR REMOTE_DIR [DIR1_TO_EXCLUDE DIR2_TO_EXCLUDE ...]
 # example: backup_encfs_ssh_rsync.sh /home/user user@server.com:backup .bashrc pictures/private
 # recover the data from the encrypted directory (/crypt):
 # mkdir /data
@@ -27,15 +27,26 @@ if [ $# -lt 2 ]; then echo "error: too few arguments"; exit 1; fi
 # is user part of group fuse?
 #if ! grep fuse /etc/group | grep -q "$USER"; then echo "error: user must be in group fuse"; exit 1; fi
 
-# store argument values
-BACKUP_DIR=$(readlink -f $1)
-REMOTE_DIR="$2"
-EXCLUDE_LIST=""
 
-# get password
-echo -n "enter password: "
-read -s PASS
-echo
+# get args
+if echo "$1" | grep -qE "^--password=[^ ]+"; then
+    PASS=$(echo -n "$1" | tail -c+12)
+    ARG2="$2"
+    ARG3="$3"
+else
+    # get password
+    echo -n "enter password: "
+    read -s PASS
+    echo
+
+    ARG2="$2"
+    ARG3="$3"
+fi
+
+# store argument values
+BACKUP_DIR=$(readlink -f "$ARG2")
+REMOTE_DIR="$ARG3"
+EXCLUDE_LIST=""
 
 
 # any dirs to exclude specified (more than 2 arguments)?
@@ -57,6 +68,7 @@ encfs --reverse --standard --extpass "echo $PASS" "$BACKUP_DIR" "$ENCRYPTED_DIR"
 
 # sync data and encfs xml option file to remote machine
 # xml option file must stand first to not delete it
+#rsync -c -avz --progress "$BACKUP_DIR"/.encfs6.xml --delete --delete-excluded $EXCLUDE_LIST "$ENCRYPTED_DIR"/ "$REMOTE_DIR"/
 rsync -avz --progress "$BACKUP_DIR"/.encfs6.xml --delete --delete-excluded $EXCLUDE_LIST "$ENCRYPTED_DIR"/ "$REMOTE_DIR"/
 
 # unmount dir

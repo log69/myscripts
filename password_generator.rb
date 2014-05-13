@@ -278,14 +278,7 @@ if ARGV.length == 0
 	puts
 else
 	n = ARGV[0].to_i
-	# argument must be a number greater than 4
-	if n >= 4
-		10.times do
-		print 	get_number(n)			+ " " + \
-				get_password_pron(n) 	+ " " + \
-				get_password(n)			+ " " + \
-				get_password_strong(n)
-		puts
-		end
-	end
+	n = 4 if n < 4
+	puts get_password_pron(n)
 end
+

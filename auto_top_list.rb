@@ -10,7 +10,7 @@
 # -------------------------------
 # description:
 # if there are a list of items with access time pairs,
-# then this creates a top list with osition numbers
+# then this creates a top list with position numbers
 # saying which item should be at which position
 # the goal is to create a fully automatic top list
 # that's not too short and not too long either

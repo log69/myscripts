@@ -27,7 +27,7 @@ def auto_top_list(times)
 	# do not display items with bigger time diffs than this
 	max_timeout = 60 * 60 * 24 * 7
 	# max number of the list
-	max_links   = 10
+	max_list    = 10
 
 	# create a list of numbers
 	list = (0..times.size-1).to_a
@@ -72,7 +72,7 @@ def auto_top_list(times)
 		end
 
 		c += 1
-		break if c >= max_links
+		break if c >= max_list
 	}
 
 	# do not sort the result, so it will carry the information

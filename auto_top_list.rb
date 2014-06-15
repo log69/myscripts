@@ -17,8 +17,8 @@
 # and make it adaptive to the latest customs of the user
 # license: BSDL
 
-# input: an array of epoch times
-# output: an array of integers
+# input: an array of times in seconds compared to now
+# output: an array of integers showing the position of each item
 def auto_top_list(times)
 	# constants:
 	# the min time passed since item visit - if it is less,

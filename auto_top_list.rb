@@ -1,0 +1,92 @@
+#!/usr/bin/env ruby
+# encoding: UTF-8
+
+# Author: Andras Horvath <mail@log69.com>
+# All rights reserved.
+
+
+# -------------------------------
+# --- auto top list algorithm ---
+# -------------------------------
+# description:
+# if there are a list of items with access time pairs,
+# then this creates a top list saying which item should be at which position
+# license: BSDL
+
+# input: an array of epoch times
+# output: an array of integers
+def auto_top_list(times)
+	# constants:
+	# the min time passed since item visit - if it is less,
+	# then it it taken as if it had been visited this time ago
+	min_timeout = 60 * 60 * 24
+	# do not display items visited older than this (compared to the previous one)
+	max_timeout = 60 * 60 * 24 * 7
+	# max number of the list
+	max_links   = 10
+
+	# create a list of numbers
+	list = (0..times.size-1).to_a
+	# sort this list by the time values
+	items = (times.zip list).sort.transpose[1]
+
+	# calculate here the differences of times between items
+	# and create a list of it
+	timediff = []
+	prev = 0
+	c = 0
+	times.sort.each { |t|
+		diff = t - prev
+		break if diff > max_timeout
+
+		items.push(c)
+		timediff.push(diff)
+
+		c += 1
+		prev = t
+	}
+	return [] if timediff.size < 1
+
+
+	# create the top list based on the time diffs
+	max = 0
+	direction = 1
+	flag = 1
+	c = 0
+	timediff.each { |x|
+		y = x
+		y = min_timeout if y < min_timeout
+
+		if direction
+			if y >= max
+				max = y
+			else
+				direction = nil
+			end
+		else
+			break if y > max
+		end
+
+		c += 1
+		break if c >= max_links
+	}
+
+	# do not sort the result, so it will carry the information
+	# that the first ones will be the most recent
+	return items[0..c - 1]
+end
+
+
+# -----------------
+# --- test code ---
+# -----------------
+# items contains names of anything, like url links or songs from a page etc.
+# times contains their access times in seconds compared to now, 60 means it was accessed a minute ago
+items = ["apple", "banana", "orange", "lemon", "melon", "tomato", "radish", "pineapple", "coconut", "onion"]
+times = (1..items.size).to_a.map{rand(60 * 60 * 24 * 30)}
+
+puts "original inputs:"
+p items, times
+puts
+puts "result:"
+p auto_top_list(times).map{|i| items[i]}

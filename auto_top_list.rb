@@ -87,7 +87,8 @@ end
 # items contains names of anything, like urls or songs from a page etc.
 # times contains their access times in seconds compared to now,
 # 60 means it was accessed a minute ago
-items = ["apple", "banana", "orange", "lemon", "melon", "tomato", "radish", "pineapple", "coconut", "onion"]
+items = ["apple", "banana", "orange", "lemon", "melon", "tomato",
+         "radish", "pineapple", "coconut", "onion"]
 times = (1..items.size).to_a.map{rand(60 * 60 * 24 * 30)}
 
 puts "original inputs:"

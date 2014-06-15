@@ -10,7 +10,11 @@
 # -------------------------------
 # description:
 # if there are a list of items with access time pairs,
-# then this creates a top list saying which item should be at which position
+# then this creates a top list with osition numbers
+# saying which item should be at which position
+# the goal is to create a fully automatic top list
+# that's not too short and not too long either
+# and make it adaptive to the latest customs of the user
 # license: BSDL
 
 # input: an array of epoch times
@@ -20,7 +24,7 @@ def auto_top_list(times)
 	# the min time passed since item visit - if it is less,
 	# then it it taken as if it had been visited this time ago
 	min_timeout = 60 * 60 * 24
-	# do not display items visited older than this (compared to the previous one)
+	# do not display items with bigger time diffs than this
 	max_timeout = 60 * 60 * 24 * 7
 	# max number of the list
 	max_links   = 10
@@ -80,8 +84,9 @@ end
 # -----------------
 # --- test code ---
 # -----------------
-# items contains names of anything, like url links or songs from a page etc.
-# times contains their access times in seconds compared to now, 60 means it was accessed a minute ago
+# items contains names of anything, like urls or songs from a page etc.
+# times contains their access times in seconds compared to now,
+# 60 means it was accessed a minute ago
 items = ["apple", "banana", "orange", "lemon", "melon", "tomato", "radish", "pineapple", "coconut", "onion"]
 times = (1..items.size).to_a.map{rand(60 * 60 * 24 * 30)}
 

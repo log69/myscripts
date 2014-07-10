@@ -17,7 +17,7 @@
 # and make it adaptive to the latest customs of the user
 #
 # algorithm:
-# we walk through hills (time values) resgistering the biggest one
+# we walk through hills (diff of time values) resgistering the biggest
 # until we get to a hill that is bigger than the rest before
 # if so, then we stop taking the items here
 # in other words:

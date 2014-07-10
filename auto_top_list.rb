@@ -15,6 +15,15 @@
 # the goal is to create a fully automatic top list
 # that's not too short and not too long either
 # and make it adaptive to the latest customs of the user
+#
+# algorithm:
+# we walk through hills (time values) resgistering the biggest one
+# until we get to a hill that is bigger than the rest before
+# if so, then we stop taking the items here
+# in other words:
+# we take those items only whose access happened not tooo long ago
+# compared to their own access times
+#
 # license: BSDL
 
 # input: an array of times in seconds compared to now

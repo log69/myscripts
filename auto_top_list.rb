@@ -1,9 +1,9 @@
 #!/usr/bin/env ruby
 # encoding: UTF-8
 
-# Author: Andras Horvath <mail@log69.com>
+# author: Andras Horvath <mail@log69.com>
 # license: BSDL
-# All rights reserved.
+# all rights reserved.
 
 
 # -------------------------------
@@ -18,11 +18,12 @@
 # and make it adaptive to the latest customs of the user
 #
 # algorithm:
-# we walk through hills (diff of time values) resgistering the biggest
-# until we get to a hill that is bigger than the rest before
-# if so, then we stop taking the items here
+# we walk through hills (the diff of time values) resgistering
+# the biggest one until the way is upwards, if it starts to go downwards
+# then we go until we get to a hill that is bigger than the rest before
+# and we stop taking the items here
 # in other words:
-# we take those items only whose access happened not tooo long ago
+# we take those items only whose access happened not too long ago
 # compared to their own access times
 
 

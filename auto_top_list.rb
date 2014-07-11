@@ -2,6 +2,7 @@
 # encoding: UTF-8
 
 # Author: Andras Horvath <mail@log69.com>
+# license: BSDL
 # All rights reserved.
 
 
@@ -23,8 +24,7 @@
 # in other words:
 # we take those items only whose access happened not tooo long ago
 # compared to their own access times
-#
-# license: BSDL
+
 
 # input: an array of times in seconds compared to now
 # output: an array of integers showing the position of each item

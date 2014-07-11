@@ -10,21 +10,20 @@
 # --- auto top list algorithm ---
 # -------------------------------
 # description:
-# if there are a list of items with access time pairs,
-# then this creates a top list with position numbers
-# saying which item should be at which position
+# the solution creates a top list with position numbers
+# from a list of items with access time pairs,
+# saying which item should be at which position -
 # the goal is to create a fully automatic top list
 # that's not too short and not too long either
 # and make it adaptive to the latest customs of the user
 #
 # algorithm:
 # we walk through hills (the diff of time values) resgistering
-# the biggest one until the way is upwards, if it starts to go downwards
+# the biggest one til the way is upwards, if it starts downwards
 # then we go until we get to a hill that is bigger than the rest before
-# and we stop taking the items here
-# in other words:
+# and we stop taking the items here, in other words:
 # we take those items only whose access happened not too long ago
-# compared to their own access times
+# relative to their own access times
 
 
 # input: an array of times in seconds compared to now

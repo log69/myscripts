@@ -30,11 +30,9 @@ def which(cmd)
 	paths = ENV["PATH"].split(":")
 	paths.push("/usr/local/bin", "/usr/bin", "/bin").uniq!
 	paths.each do |dir|
-		file = dir + "/" + cmd
-		if File.file?(file) and File.executable?(file)
-			return true end
+		return true if File.executable? dir + "/" + cmd
 	end
-	return
+	return false
 end
 
 
@@ -48,8 +46,7 @@ end
 # --- uptime ---
 # --------------
 # get uptime of system in seconds
-f = File.open("/proc/uptime")
-text = f.read; f.close
+text = File.read("/proc/uptime")
 sys_uptime = text.split[0].to_i
 sys_uptime_day  = sys_uptime / 60 / 60 / 24
 sys_uptime_left = sys_uptime - sys_uptime_day * 60 * 60 * 24
@@ -68,16 +65,9 @@ end
 print ("%02d" % sys_uptime_hour).to_s + ":" + ("%02d" % sys_uptime_min).to_s + ", "
 # print times of waking up
 f_wake = "/sys/power/wakeup_count"
-if File.file? f_wake
-	f = File.open(f_wake)
-	text = f.read; f.close
-	print "awaken #{text[/[0-9]+/]}x, "
-end
-# get load of system
-f = File.open("/proc/loadavg")
-text = f.read; f.close
+print "awaken #{File.read(f_wake)[/[0-9]+/]}x, " if File.file? f_wake
 # print load average
-print "load " + (text.split[0..2] * ", ").to_s
+print "load " + (File.read("/proc/loadavg").split[0..2] * ", ").to_s
 puts; puts
 
 
@@ -85,9 +75,7 @@ puts; puts
 # --- system memory ---
 # ---------------------
 print blue("Memory (MB): ")
-file = File.open("/proc/meminfo", "r")
-text = file.read
-file.close
+text = File.read("/proc/meminfo")
 
 bar = 40
 mem_total   = text[/^memtotal.*/i][/[0-9]+/].to_i / 1024

@@ -36,8 +36,12 @@ while true do
 	# timeout reached?
 	if c >= count
 		# clear clipboard if so
-		clear if clip != ""
-		# restart
+		if clip != ""
+			clear
+			temp = ""
+		end
+
+		# restart counter
 		c = 0
 	end
 end

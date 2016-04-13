@@ -279,7 +279,7 @@ if which("df")
 	res  = []
 	res2 = []
 	# get info for "/dev/" only
-	`df -hP 2>/dev/null`.split("\n")[1..-1].sort.each do |x|
+	`df -hP 2>/dev/null`.split("\n")[1..-1].sort_by{|x|x[/[^ ]+$/]}.each do |x|
 		y = x.split.to_a[0]
 		if x.match(/^\/dev\//) and not res2.include? y
 			res.push(x)

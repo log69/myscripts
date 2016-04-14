@@ -277,8 +277,9 @@ if ARGV.length == 0
 	end
 	puts
 else
+	c = ARGV[1].to_i
+	c = 1 if c < 1
 	n = ARGV[0].to_i
 	n = 4 if n < 4
-	puts get_password_pron(n)
+	c.times{ puts get_password_pron(n) }
 end
-

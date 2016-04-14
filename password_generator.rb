@@ -277,9 +277,25 @@ if ARGV.length == 0
 	end
 	puts
 else
+	# how many character groups we want by splitting up the password
+	splitter = ARGV[2].to_i
+	# how many passwords we need
 	c = ARGV[1].to_i
 	c = 1 if c < 1
+	# password length
 	n = ARGV[0].to_i
 	n = 4 if n < 4
-	c.times{ puts get_password_pron(n) }
+
+	c.times{
+		p = get_password_pron(n)
+		if splitter > 0
+			i = 0
+			p = p.chars.map{|x|
+				i += 1
+				x = x + " " if i % splitter == 0
+				x
+			}.join
+		end
+		puts p
+	}
 end

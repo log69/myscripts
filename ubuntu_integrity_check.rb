@@ -89,6 +89,7 @@ def store(data = nil)
 end
 
 
+
 puts "-----------------------"
 puts "--- integrity check ---"
 puts "-----------------------"
@@ -101,7 +102,7 @@ if not db
 	print "first time run (takes longer), creating db..."
 
 	db = {}
-	dotcount = 100; d = 0
+	dotcount = 1000; d = 0
 	get_files.each {|f|
 		db[f] = info(f)
 		# print progress

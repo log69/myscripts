@@ -47,7 +47,6 @@ def get_files
 	d1.each{|f| log += gunzip(f) }
 	d2.each{|f| log += File.read(f) }
 	# find package name entries more recent than our db
-	t = "2016-05-13 11:00:00"
 	l = log.split("\n").sort.select{|x|x > t}.select{|x| x[/status *installed/]}.map{|x|x[/status *installed *[^\:]+/].split[2]}
 	# collect file names of all these package names
 	list = []
@@ -95,16 +94,16 @@ puts "--- integrity check ---"
 puts "-----------------------"
 
 time1 = Time.now.to_i
+dotcount = 1000
 
 db = store
 if not db
-
 	print "first time run (takes longer), creating db..."
-
 	db = {}
-	dotcount = 1000; d = 0
+	d = 0
 	get_files.each {|f|
 		db[f] = info(f)
+
 		# print progress
 		d += 1
 		if d >= dotcount
@@ -117,10 +116,12 @@ if not db
 	puts "done (#{(Time.now.to_i - time1) / 60} min)"
 	puts "you can rerun this script later in order to print changed files"
 	puts "(updated files by os will not be printed but automaticallly updated in db)"
-else
 
+else
 	puts "checking files..."
+	res = []
 	counter = 0
+	d = 0
 	get_files.each {|f|
 		i = info(f, 1)
 		# is file in db yet?
@@ -146,14 +147,24 @@ else
 			if flag
 				db[f] = i
 				w = (flag == 1) ? "(permission change)" : "(content change)"
-				puts "  #{f}  #{w}"
+				res << "  #{f}  #{w}"
 
 				counter += 1
 			end
+		end
+
+		# print progress
+		d += 1
+		if d >= dotcount
+			print "."
+			d = 0
 		end
 	}
 	store(db)
 
 	puts "done (#{(Time.now.to_i - time1) / 60} min, #{counter} changed files)"
+
+	# print result
+	res.each {|x| puts x}
 end
 

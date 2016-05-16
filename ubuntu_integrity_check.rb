@@ -130,6 +130,10 @@ if not test_file(db_name)
 	puts "(updated files by os will not be printed but automaticallly updated in db)"
 
 else
+	print "loading db..."
+	db = store
+	puts "done"
+
 	print "checking files..."
 	res = []
 	counter = 0

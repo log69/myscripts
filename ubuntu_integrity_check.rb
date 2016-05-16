@@ -107,11 +107,14 @@ time1 = Time.now.to_i
 dotcount = 1000
 db = {}
 
+print "first time run (takes longer), collectting files..."
+ff = get_files
+puts "done"
+
 if not test_file(db_name)
-	print "first time run (takes longer), creating db..."
-	db = {}
+	print "creating db..."
 	d = 0
-	get_files.each {|f|
+	ff.each {|f|
 		db[f] = info(f)
 
 		# print progress
@@ -128,15 +131,11 @@ if not test_file(db_name)
 	puts "(updated files by os will not be printed but automaticallly updated in db)"
 
 else
-	print "loading db..."
-	db = store
-	puts "done"
-
 	print "checking files..."
 	res = []
 	counter = 0
 	d = 0
-	get_files.each {|f|
+	ff.each {|f|
 		i = info(f, 1)
 		# is file in db yet?
 		i2 = db[f]

@@ -6,6 +6,8 @@
 #
 # Copyright (C) 2016- Andras Horvath <mail@log69.com>
 # All rights reserved.
+#
+# WARNING: No responsibility of whatsoever for any damage caused!
 
 
 C_start_dir = "/"
@@ -143,7 +145,7 @@ else
 	counter = 0
 	d = 0
 	ff.each {|f|
-		i = info(f, 1)
+		i = info(f, 1).to_a
 		# is file in db yet?
 		i2 = db[f]
 		if not i2

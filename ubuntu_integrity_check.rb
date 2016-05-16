@@ -28,7 +28,9 @@ end
 # get all file list substracting the changed files by os update
 def get_files
 	start_dir = "/"
-	exclude_dir = []
+	exclude_dir = ["home", "media", "mnt", "proc", "sys"]
+
+	start_dir += "/" if start_dir[-1..-1] != "/"
 
 	# get db mod time for compare
 	t = File.mtime(get_db_name).to_s[/[0-9]+\-[0-9]+\-[0-9]+\ *[0-9]+\:[0-9]+\:[0-9]+/]
@@ -56,7 +58,7 @@ def get_files
 	res = Dir.glob("#{start_dir}**/*", File::FNM_DOTMATCH) - list.sort.uniq
 
 	# remove excluded dirs
-	exclude_dir.each{|d| res -= [d]}
+	exclude_dir.each{|d| res = res.select{|x| not x[/^#{start_dir}#{d}\//]} }
 	return res
 end
 

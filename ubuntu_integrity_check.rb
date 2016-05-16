@@ -44,32 +44,31 @@ def get_files
 	# remove excluded dirs
 	C_exclude_dir.each{|d| res = res.select{|x| not x[/^#{start_dir}#{d}\//]} }
 
-	# remove files from os update
-	if test_file(db_name)
-		# get db mod time for compare
-		t = File.mtime(db_name).to_s[/[0-9]+\-[0-9]+\-[0-9]+\ *[0-9]+\:[0-9]+\:[0-9]+/]
-		# -------------------
-		# --- dpkg plugin ---
-		# -------------------
-		# collect package names changed by os update from dpkg.log
-		d1 = Dir["/var/log/dpkg.log*.gz"]
-		d2 = Dir["/var/log/dpkg.log*"] - d1
-		log = ""
-		d1.each{|f| log += gunzip(f) }
-		d2.each{|f| log += File.read(f) }
-		# find package name entries more recent than our db
-		l = log.split("\n").sort.select{|x|x > t}.select{|x| x[/status *installed/]}.map{|x|x[/status *installed *[^\:]+/].split[2]}
-		# collect file names of all these package names
-		list = []
-		l.sort.uniq.each {|x|
-			Dir.glob("/var/lib/dpkg/info/#{x}*.list") {|y|
-				list << File.read(y).split("\n").select{|z| test_file(z)}
-			}
-		}
+	# get db mod time for compare
+	t = test_file(db_name) ? File.mtime(db_name).to_s[/[0-9]+\-[0-9]+\-[0-9]+\ *[0-9]+\:[0-9]+\:[0-9]+/] : ""
 
-		# remove list to recursive dir list
-		res -= list.sort.uniq
-	end
+	# remove files from os update
+
+	# -------------------
+	# --- dpkg plugin ---
+	# -------------------
+	# collect package names changed by os update from dpkg.log
+	d1 = Dir["/var/log/dpkg.log*.gz"]
+	d2 = Dir["/var/log/dpkg.log*"] - d1
+	log = ""
+	d1.each{|f| log += gunzip(f) }
+	d2.each{|f| log += File.read(f) }
+	# find package name entries more recent than our db
+	l = log.split("\n").sort.select{|x|x > t}.select{|x| x[/status *installed/]}.map{|x|x[/status *installed *[^\:]+/].split[2]}
+	# collect file names of all these package names
+	list = []
+	l.sort.uniq.each {|x|
+		Dir.glob("/var/lib/dpkg/info/#{x}*.list") {|y|
+			list << File.read(y).split("\n").select{|z| test_file(z)}
+		}
+	}
+	# remove list to recursive dir list
+	res -= list.sort.uniq
 
 	return res
 end

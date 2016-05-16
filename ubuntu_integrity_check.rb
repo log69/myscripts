@@ -82,7 +82,7 @@ def info(filename, nohash = nil)
 		h = nohash ? (nil) : (Digest::SHA1.hexdigest(File.read(f)))
 		return [File.mtime(f), File.stat(f).mode.to_s(8).to_i, h]
 	end
-	return nil
+	return []
 end
 
 # store data in file or return it on null input
@@ -145,7 +145,7 @@ else
 	counter = 0
 	d = 0
 	ff.each {|f|
-		i = info(f, 1).to_a
+		i = info(f, 1)
 		# is file in db yet?
 		i2 = db[f]
 		if not i2

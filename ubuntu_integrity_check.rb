@@ -59,7 +59,7 @@ def get_files
 	d1.each{|f| log += gunzip(f) }
 	d2.each{|f| log += File.read(f) }
 	# find package name entries more recent than our db
-	pkg = log.split("\n").sort.select{|x|x > t}.select{|x| x[/status *installed/]}.map{|x|x[/status *installed *[^\:]+/].split[2]}
+	pkg = log.split("\n").sort.select{|x|x > t}.select{|x| x[/status *installed/]}.map{|x|x[/status *installed *[^\:]+/].split[2]} - ["man-db"]
 	# collect file names of all these package names
 	list = []
 	pkg.sort.uniq.each {|x|

@@ -107,12 +107,12 @@ time1 = Time.now.to_i
 dotcount = 1000
 db = {}
 
-print "first time run (takes longer), collectting files..."
+print "collecting files..."
 ff = get_files
 puts "done"
 
 if not test_file(db_name)
-	print "creating db..."
+	print "first time run, creating db..."
 	d = 0
 	ff.each {|f|
 		db[f] = info(f)

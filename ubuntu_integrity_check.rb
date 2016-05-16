@@ -127,7 +127,7 @@ if not test_file(db_name)
 	store(db)
 
 	puts "done (#{(Time.now.to_i - time1) / 60} min)"
-	puts "you can rerun this script later in order to print changed files"
+	puts "you can rerun this script later in order to see changed files"
 	puts "(updated files by os will not be printed but automaticallly updated in db)"
 
 else

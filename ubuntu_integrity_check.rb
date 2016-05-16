@@ -59,10 +59,10 @@ def get_files
 	d1.each{|f| log += gunzip(f) }
 	d2.each{|f| log += File.read(f) }
 	# find package name entries more recent than our db
-	l = log.split("\n").sort.select{|x|x > t}.select{|x| x[/status *installed/]}.map{|x|x[/status *installed *[^\:]+/].split[2]}
+	pkg = log.split("\n").sort.select{|x|x > t}.select{|x| x[/status *installed/]}.map{|x|x[/status *installed *[^\:]+/].split[2]}
 	# collect file names of all these package names
 	list = []
-	l.sort.uniq.each {|x|
+	pkg.sort.uniq.each {|x|
 		Dir.glob("/var/lib/dpkg/info/#{x}*.list") {|y|
 			list << File.read(y).split("\n").select{|z| test_file(z)}
 		}
@@ -70,7 +70,7 @@ def get_files
 	# remove list to recursive dir list
 	res -= list.sort.uniq
 
-	return res
+	return [res, pkg]
 end
 
 # return the permission, size and hash of file
@@ -107,8 +107,11 @@ dotcount = 1000
 db = {}
 
 print "collecting files..."
-ff = get_files
+temp = get_files
+ff = temp[0]
+pkg = temp[1]
 puts "done"
+
 
 if not test_file(db_name)
 	print "first time run, creating db..."
@@ -130,6 +133,7 @@ if not test_file(db_name)
 	puts "(updated files by os will not be printed but automaticallly updated in db)"
 
 else
+	puts "installed packages: #{pkg.join(", ")}" if pkg.size > 0
 	print "loading db..."
 	db = store
 	puts "done"

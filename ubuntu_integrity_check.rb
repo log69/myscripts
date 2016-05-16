@@ -21,7 +21,7 @@ def test_file(f)
 end
 
 # return the filename of our db
-def get_db_name
+def db_name
 	return File.basename($0, ".*") + "_db.yml"
 end
 
@@ -36,7 +36,7 @@ def get_files
 	start_dir += "/" if start_dir[-1..-1] != "/"
 
 	# get db mod time for compare
-	t = File.mtime(get_db_name).to_s[/[0-9]+\-[0-9]+\-[0-9]+\ *[0-9]+\:[0-9]+\:[0-9]+/]
+	t = File.mtime(db_name).to_s[/[0-9]+\-[0-9]+\-[0-9]+\ *[0-9]+\:[0-9]+\:[0-9]+/]
 	# -------------------
 	# --- dpkg plugin ---
 	# -------------------
@@ -76,7 +76,7 @@ end
 
 # store data in file or return it on null input
 def store(data = nil)
-	f = get_db_name
+	f = db_name
 	y = YAML::Store.new(f)
 	y.transaction{
 		if data

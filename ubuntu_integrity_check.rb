@@ -165,11 +165,10 @@ else
 					flag = 2
 				end
 			end
-			# print warning if permission or content (hash) has changed
+			# store result
 			if flag
 				db[f] = i
-				w = (flag == 1) ? "(permission change)" : "(content change)"
-				res << "  #{f}  #{w}"
+				res << [flag, f]
 
 				counter += 1
 			end
@@ -186,7 +185,15 @@ else
 	puts "done"
 
 	# print result
-	puts res
+	flag1, flag2 = nil
+	res.sort.each{|x|
+		if x[0] == 1
+			(puts "permission change:"; flag1 = 1) if not flag1
+		else
+			(puts "content change:"; flag2 = 1) if not flag2
+		end
+		puts "  #{x[1]}"
+	}
 
 	puts "(#{(Time.now.to_i - time1) / 60} min, #{counter} changed files)"
 end

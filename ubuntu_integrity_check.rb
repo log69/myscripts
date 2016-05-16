@@ -96,7 +96,10 @@ puts "-----------------------"
 time1 = Time.now.to_i
 dotcount = 1000
 
+print "loading db..."
 db = store
+puts "done"
+
 if not db
 	print "first time run (takes longer), creating db..."
 	db = {}
@@ -118,7 +121,7 @@ if not db
 	puts "(updated files by os will not be printed but automaticallly updated in db)"
 
 else
-	puts "checking files..."
+	print "checking files..."
 	res = []
 	counter = 0
 	d = 0

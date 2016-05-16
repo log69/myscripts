@@ -1,4 +1,4 @@
-#!/usr/local/bin/ruby
+#!/usr/bin/env ruby
 # encoding: UTF-8
 
 # info: checks the integrity of files in the file system and prints the name of changed files
@@ -95,12 +95,9 @@ puts "-----------------------"
 
 time1 = Time.now.to_i
 dotcount = 1000
+db = {}
 
-print "loading db..."
-db = store
-puts "done"
-
-if not db
+if not test_file(db_name)
 	print "first time run (takes longer), creating db..."
 	db = {}
 	d = 0
@@ -121,6 +118,10 @@ if not db
 	puts "(updated files by os will not be printed but automaticallly updated in db)"
 
 else
+	print "loading db..."
+	db = store
+	puts "done"
+
 	print "checking files..."
 	res = []
 	counter = 0

@@ -173,10 +173,11 @@ else
 		end
 	}
 	store(db)
-
-	puts "done (#{(Time.now.to_i - time1) / 60} min, #{counter} changed files)"
+	puts "done"
 
 	# print result
 	res.each {|x| puts x}
+
+	puts "(#{(Time.now.to_i - time1) / 60} min, #{counter} changed files)"
 end
 

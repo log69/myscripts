@@ -1,8 +1,11 @@
 #!/usr/bin/env ruby
 # encoding: UTF-8
-
+#
 # info: checks the integrity of files in the file system and prints the name of changed files
 #       it also takes into account which files have been udated by the os and skip those ones from the report
+#
+# Copyright (C) 2016- Andras Horvath <mail@log69.com>
+# All rights reserved.
 
 
 C_start_dir = "/"

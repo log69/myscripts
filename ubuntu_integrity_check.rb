@@ -27,7 +27,7 @@ end
 
 # get all file list substracting the changed files by os update
 def get_files
-	start_dir = "/home/andras/temp/"
+	start_dir = "/"
 	exclude_dir = []
 
 	# get db mod time for compare

@@ -5,6 +5,11 @@
 #       it also takes into account which files have been udated by the os and skip those ones from the report
 
 
+C_start_dir = "/"
+C_exclude_dir = ["home", "media", "mnt", "proc", "sys"]
+C_max_filesize = 1000
+
+
 require "yaml/store"
 require "digest"
 require "zlib"
@@ -12,7 +17,7 @@ require "zlib"
 
 # return true on proper files that are not dirs, socket etc.
 def test_file(f)
-	return (File.file?(f) and File.readable?(f) and not (File.socket?(f) or File.blockdev?(f) or File.chardev?(f)))
+	return (File.file?(f) and File.readable?(f) and File.size?(f).to_i < C_max_filesize*1024*1024 and not (File.socket?(f) or File.blockdev?(f) or File.chardev?(f)))
 end
 
 # return the filename of our db
@@ -27,9 +32,7 @@ end
 
 # get all file list substracting the changed files by os update
 def get_files
-	start_dir = "/"
-	exclude_dir = ["home", "media", "mnt", "proc", "sys"]
-
+	start_dir = C_start_dir
 	start_dir += "/" if start_dir[-1..-1] != "/"
 
 	# get db mod time for compare
@@ -58,7 +61,7 @@ def get_files
 	res = Dir.glob("#{start_dir}**/*", File::FNM_DOTMATCH) - list.sort.uniq
 
 	# remove excluded dirs
-	exclude_dir.each{|d| res = res.select{|x| not x[/^#{start_dir}#{d}\//]} }
+	C_exclude_dir.each{|d| res = res.select{|x| not x[/^#{start_dir}#{d}\//]} }
 	return res
 end
 

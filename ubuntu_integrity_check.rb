@@ -160,6 +160,7 @@ else
 				db[f] = i
 				w = (flag == 1) ? "(permission change)" : "(content change)"
 				res << "  #{f}  #{w}"
+p f
 
 				counter += 1
 			end
@@ -176,7 +177,7 @@ else
 	puts "done"
 
 	# print result
-	res.each {|x| puts x}
+	puts res
 
 	puts "(#{(Time.now.to_i - time1) / 60} min, #{counter} changed files)"
 end

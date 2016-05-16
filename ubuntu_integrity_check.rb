@@ -160,7 +160,6 @@ else
 				db[f] = i
 				w = (flag == 1) ? "(permission change)" : "(content change)"
 				res << "  #{f}  #{w}"
-p f
 
 				counter += 1
 			end

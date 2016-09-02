@@ -81,7 +81,7 @@ mem_total   = text[/^memtotal.*/i][/[0-9]+/].to_i / 1024
 mem_free    = text[/^memfree.*/i][/[0-9]+/].to_i / 1024
 mem_buffers = text[/^buffers.*/i][/[0-9]+/].to_i / 1024
 mem_cached  = text[/^cached.*/i][/[0-9]+/].to_i / 1024
-mem_swap    = text[/^swaptotal.*/i][/[0-9]+/].to_i / 1024
+mem_swap    = text[/^swaptotal.*/i][/[0-9]+/].to_i / 1024 - text[/^swapfree.*/i][/[0-9]+/].to_i / 1024
 mem_used    = mem_total - mem_free - mem_buffers - mem_cached
 
 print blue("[" + "#" * (bar * mem_used / mem_total) \

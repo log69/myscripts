@@ -28,7 +28,7 @@ def blue  (text); colorize(text, 34); end
 # check the existence of an executable
 def which(cmd)
 	paths = ENV["PATH"].split(":")
-	paths.push("/usr/local/bin", "/usr/bin", "/bin", "/usr/local/sbin", "/usr/sbin", "/sbin", ).uniq!
+	paths.push("/usr/local/bin", "/usr/bin", "/bin", "/usr/local/sbin", "/usr/sbin", "/sbin").uniq!
 	paths.each do |dir|
 		return true if File.executable? dir + "/" + cmd
 	end

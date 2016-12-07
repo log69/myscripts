@@ -115,7 +115,8 @@ Dir.foreach("/proc") do |file|
 			f = File.open(path + "/stat", "r")
 			text = f.read.split; f.close
 			p_name = text[1][1..-2]
-			p_cpu = (text[13].to_f) * 100 / (sys_uptime * $jiffy - text[21].to_f)
+			p_time = sys_uptime * $jiffy - text[21].to_f
+			p_cpu = (text[13].to_f) * 100 / p_time if p_time > 0
 		end
 
 

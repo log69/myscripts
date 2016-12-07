@@ -16,6 +16,7 @@
 
 # constants
 $num = 8
+$jiffy = 100
 
 # print colorized text
 def colorize(text, color_code) "\e[#{color_code}m#{text}\e[0m" end
@@ -101,7 +102,7 @@ proc_list = []
 # search for pid dirs in /proc
 Dir.foreach("/proc") do |file|
 	path = "/proc/" + file
-	if File.directory?(path) and file =~ /^\d+$/
+	if File.directory?(path) and file[/^\d+$/]
 
 		p_name = ""
 		p_cpu  = 0
@@ -109,15 +110,12 @@ Dir.foreach("/proc") do |file|
 		p_io   = 0
 		p_mem  = 0
 
-		# get name and cpu usage
+		# average get name and cpu usage
 		if File.readable?(path + "/stat")
 			f = File.open(path + "/stat", "r")
 			text = f.read.split; f.close
-
 			p_name = text[1][1..-2]
-
-			p_cpu = 0
-			text[13, 2].each {|x| p_cpu += x.to_i}
+			p_cpu = (text[13].to_f) * 100 / (sys_uptime * $jiffy - text[21].to_f)
 		end
 
 
@@ -189,7 +187,7 @@ end
 # print cpu list
 puts red("CPU usage (%):")
 for i in proc_cur.sort.reverse[0..$num-1]
-	print i[1] + " (" + ("%.2f" % (i[0].to_f / sys_uptime)).to_s + ") "
+	print i[1] + " (" + (i[0].to_i).to_s + ") "
 end
 puts
 

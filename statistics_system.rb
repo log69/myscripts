@@ -215,7 +215,7 @@ for i in (0..proc_new.length-1)
 	proc_cur[i] = [proc_new[i][3] / 1024, proc_new[i][0]]
 end
 # print disk list
-puts red("Disk usage (KB/s):")
+puts red("Disk usage (KB):")
 for i in proc_cur.sort.reverse[0..$num-1]
 	print i[1] + " (" + (i[0] / sys_uptime).to_i.to_s + ") "
 end

@@ -114,7 +114,7 @@ Dir.foreach("/proc") do |file|
 		if File.readable?(path + "/stat")
 			f = File.open(path + "/stat", "r")
 			text = f.read.split; f.close
-			p_name = text[1][1..-2]
+			p_name = File.read(path + "/cmdline")[/[^\/]+$/].to_s
 			p_time = sys_uptime * $jiffy - text[21].to_f
 			p_cpu = (text[13].to_f) * 100 / p_time if p_time > 0
 		end
@@ -203,7 +203,7 @@ end
 # print mem list
 puts red("Memory usage (MB):")
 for i in proc_cur.sort.reverse[0..$num-1]
-	print i[1] + " (" + i[0].to_s + ") "
+	print i[1] + " (" + i[0].to_i.to_s + ") "
 end
 puts
 
@@ -218,7 +218,7 @@ end
 # print disk list
 puts red("Disk usage (KB/s):")
 for i in proc_cur.sort.reverse[0..$num-1]
-	print i[1] + " (" + ("%.2f" % (i[0].to_f / sys_uptime)).to_s + ") "
+	print i[1] + " (" + (i[0] / sys_uptime).to_i.to_s + ") "
 end
 puts
 
@@ -234,7 +234,7 @@ end
 # print disk list
 puts red("All I/O usage (MB, includes disk, network, tty, stdout etc.):")
 for i in proc_cur.sort.reverse[0..$num-1]
-	print i[1] + " (" + ("%.2f" % (i[0].to_f)).to_s + ") "
+	print i[1] + " (" + i[0].to_i.to_s + ") "
 end
 puts; puts
 

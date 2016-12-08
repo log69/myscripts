@@ -104,7 +104,7 @@ Dir.foreach("/proc") do |file|
 	path = "/proc/" + file
 	if File.directory?(path) and file[/^\d+$/]
 
-		p_name = ""
+		p_name = File.read(path + "/cmdline").split("\0")[0].to_s[/[^\/]+$/].to_s
 		p_cpu  = 0
 		p_disk = 0
 		p_io   = 0
@@ -114,7 +114,6 @@ Dir.foreach("/proc") do |file|
 		if File.readable?(path + "/stat")
 			f = File.open(path + "/stat", "r")
 			text = f.read.split; f.close
-			p_name = File.read(path + "/cmdline")[/[^\/]+$/].to_s
 			p_time = sys_uptime * $jiffy - text[21].to_f
 			p_cpu = (text[13].to_f) * 100 / p_time if p_time > 0
 		end
@@ -124,23 +123,23 @@ Dir.foreach("/proc") do |file|
 		if File.readable?(path + "/io")
 			f = File.open(path + "/io", "r")
 			text = f.read; f.close
-			p_disk  = text.match("^read_bytes\:.*" ).to_s.match("[0-9]+").to_s.to_i
-			p_disk += text.match("^write_bytes\:.*").to_s.match("[0-9]+").to_s.to_i
+			p_disk  = text[/^read_bytes\:.*/].to_s[/[0-9]+/].to_s.to_i
+			p_disk += text[/^write_bytes\:.*/].to_s[/[0-9]+/].to_s.to_i
 		end
 
 		# get other io usage (includes network, tty, std etc.)
 		if File.readable?(path + "/io")
 			f = File.open(path + "/io", "r")
 			text = f.read; f.close
-			p_io  = text.match("^rchar\:.*" ).to_s.match("[0-9]+").to_s.to_i
-			p_io += text.match("^wchar\:.*").to_s.match("[0-9]+").to_s.to_i
+			p_io  = text[/^rchar\:.*/].to_s[/[0-9]+/].to_s.to_i
+			p_io += text[/^wchar\:.*/].to_s[/[0-9]+/].to_s.to_i
 		end
 
 		# get mem usage
 		if File.readable?(path + "/status")
 			f = File.open(path + "/status", "r")
 			text = f.read; f.close
-			p_mem = text.match("^VmRSS\:.*").to_s.match("[0-9]+").to_s.to_i
+			p_mem = text[/^VmRSS\:.*/].to_s[/[0-9]+/].to_s.to_i
 		end
 
 		if p_name != ""
@@ -280,7 +279,7 @@ if which("df")
 	# get info for "/dev/" only
 	`df -hP 2>/dev/null`.split("\n")[1..-1].sort_by{|x|x[/[^ ]+$/]}.each do |x|
 		y = x.split.to_a[0]
-		if x.match(/^\/dev\//) and not res2.include? y
+		if x[/^\/dev\//] and not res2.include? y
 			res.push(x)
 			res2.push(y)
 		end

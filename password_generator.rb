@@ -1,6 +1,7 @@
 #!/usr/bin/env ruby
 # info: generate random passwords, also without special or mixable chars
-# command [pass length]
+# command [length amount break]
+# example: command 12 10 3
 # without parameter it prints several columns of passwords
 # each containing stronger ones going left to right
 # license: GPLv3+ <http://www.gnu.org/licenses/gpl.txt>

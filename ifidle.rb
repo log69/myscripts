@@ -9,10 +9,14 @@
 # example: ifidle.rb ; echo do something ...
 
 
+max_load = 0.2
+min_uptime = 60 * 60
+
 # sleep 15m between checking values
 max_sleep = 15 * 60
 # wait max 12 hours and then exit anyway
 max_cycles = 12 * 60 * 60 / max_sleep
+
 
 loop {
 
@@ -36,7 +40,7 @@ loop {
 	end
 
 
-	break  if (my_load < 0.3 and my_uptime > 60 * 60) or (max_cycles -= 1) <= 0
+	break  if (my_load < max_load and my_uptime > min_uptime) or (max_cycles -= 1) <= 0
 
 	sleep max_sleep
 }

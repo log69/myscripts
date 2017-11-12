@@ -8,8 +8,10 @@
 # example: ifidle.rb ; echo OK
 
 
-# wait max 12 hours
-max_cycles = 60 / 15 * 12
+# sleep 15m between checking values
+max_sleep = 15 * 60
+# wait max 12 hours and then exit anyway
+max_cycles = 12 * 60 * 60 / max_sleep
 
 loop {
 
@@ -35,5 +37,5 @@ loop {
 
 	break  if (my_load < 0.5 and my_uptime > 60 * 60) or (max_cycles -= 1) <= 0
 
-	sleep 15 * 60
+	sleep max_sleep
 }

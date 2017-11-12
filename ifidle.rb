@@ -6,7 +6,7 @@
 # depends: ruby
 # platform: linux
 # usage: command ; [other shell commands]
-# example: ifidle.rb ; echo OK
+# example: ifidle.rb ; echo do something ...
 
 
 # sleep 15m between checking values

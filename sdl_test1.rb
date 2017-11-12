@@ -13,7 +13,7 @@
 # sudo gem install rubysdl
 #
 # on Fedora, RHEL or clones:
-# su -c "yum group install 'Development Tools'"
+# su -c "yum groupinstall 'Development Tools'"
 # su -c "yum install ruby ruby-devel rubygems SDL SDL-devel SDL_image SDL_image-devel freetype-devel"
 #
 # # compile and install ruby 1.9.x rather from source if only 1.8.x is available

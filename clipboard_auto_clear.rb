@@ -5,8 +5,8 @@
 # depends on package: ruby, xsel
 # tested on: Ubuntu 14 LTS 64 bit
 
-timeout = 60
-poll = 5
+timeout = 300
+poll = 60
 
 def get
 	return "#{`xsel --display :0 -p`}#{`xsel --display :0 -s`}#{`xsel --display :0 -b`}".strip

@@ -40,7 +40,8 @@ loop {
 	end
 
 
-	break  if (my_load < max_load and my_uptime > min_uptime) or (max_cycles -= 1) <= 0
+	break  if (my_load < max_load and my_uptime > min_uptime) \
+			  or (max_cycles -= 1) <= 0
 
 	sleep max_sleep
 }

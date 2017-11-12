@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
-# info: return true only if an hour has already passed since last boot
-#       or last resume and the load is less than a specific value
-#       it will sleep until conditions meet delaying the command in line
+# info: exit only if an hour has already passed since last boot
+#       or last resume and the load is less than a desired value
+#       or sleep until conditions meet delaying the commands in line
 # depends: ruby
 # platform: linux
 # usage: command ; [other shell commands]

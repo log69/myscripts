@@ -7,7 +7,10 @@
 # usage: command ; [other shell commands]
 # example: ifidle.rb ; echo OK
 
+
+# wait max 12 hours
 max_cycles = 60 / 15 * 12
+
 loop {
 
 	# get load average for last 15 min

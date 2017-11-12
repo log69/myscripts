@@ -9,11 +9,11 @@
 # example: ifidle.rb ; echo do something ...
 
 
-max_load = 0.5
+max_load   = 0.5
 min_uptime = 60 * 60
 
 # sleep 15m between checking values
-max_sleep = 15 * 60
+max_sleep  = 15 * 60
 # wait max 12 hours and then exit anyway
 max_cycles = 12 * 60 * 60 / max_sleep
 

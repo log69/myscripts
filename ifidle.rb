@@ -9,7 +9,7 @@
 # example: ifidle.rb ; echo do something ...
 
 
-max_load = 0.2
+max_load = 0.5
 min_uptime = 60 * 60
 
 # sleep 15m between checking values

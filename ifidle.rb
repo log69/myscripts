@@ -2,6 +2,7 @@
 # info: exit only if an hour has already passed since last boot
 #       or last resume and the load is less than a desired value
 #       or sleep until conditions meet delaying the commands in line
+#       the purpose is to delay a job until the computer gets idle
 # depends: ruby
 # platform: linux
 # usage: command ; [other shell commands]
@@ -35,7 +36,7 @@ loop {
 	end
 
 
-	break  if (my_load < 0.5 and my_uptime > 60 * 60) or (max_cycles -= 1) <= 0
+	break  if (my_load < 0.3 and my_uptime > 60 * 60) or (max_cycles -= 1) <= 0
 
 	sleep max_sleep
 }

@@ -7,10 +7,10 @@ def add(text); text.split.map{|x|x.to_i}.inject(:+).to_i / 1024 / 1024; end
 
 if File.exist? "/sys/block/zram0"
 
-	orig = `zramctl --bytes --noheadings --output  DATA`
-	comp = `zramctl --bytes --noheadings --output COMPR`
+	orig = add `zramctl --bytes --noheadings --output  DATA`
+	comp = add `zramctl --bytes --noheadings --output COMPR`
 
-	div  = (orig == 0) ? 0 : (100 * add(comp) / add(orig))
+	div  = (orig == 0) ? 0 : (100 * comp / orig)
 
 	puts "Swap: Zram ratio (orig / comp): #{orig}M / #{comp}M -> #{div}%"
 

@@ -1,13 +1,10 @@
 #!/usr/bin/env ruby
 # info: print overall system statistics
-#  summarizes the values of the separate processes with the same names
-#  cpu usage of processes shows the used cpu since their start
-#  disk usage of processes shows the average of read + written kilobytes
-#   since their start
-#  all io usage shows all the used I/O (disk, network, tty, stdout etc.)
-#   since their start
-#  also shows a final order of the most resource hungry processes
-#   based on the weighted mean of their statistics
+#   summarizes the values of the separate processes with the same names
+#   cpu usage of processes shows the used cpu since their start
+#   disk usage of processes shows the average of read + written kilobytes since their start
+#   all io usage shows all the used I/O (disk, network, tty, stdout etc.) since their start
+#   also shows a final order of the most resource hungry processes based on the weighted mean of their statistics
 # platform: Linux only
 # depends: df command
 # license: GPLv3+ <http://www.gnu.org/licenses/gpl.txt>

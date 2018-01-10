@@ -12,7 +12,7 @@ if File.exist? "/sys/block/zram0"
 
 	div  = (orig == 0) ? 0 : (100 * comp / orig)
 
-	puts "Swap: Zram ratio (orig / comp): #{orig}M / #{comp}M -> #{div}%"
+	puts "Swap: Zram ratio: #{orig}M / #{comp}M -> #{div}%"
 
 else
 

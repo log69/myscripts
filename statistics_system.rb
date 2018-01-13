@@ -94,7 +94,9 @@ print "Free ("     + mem_free.to_s     + ") "
 print "Swap ("     + mem_swap.to_s     + ") "
 print "\n\n"
 
-# get process infos
+# -------------------------
+# --- get process infos ---
+# -------------------------
 proc_list = []
 # search for pid dirs in /proc
 Dir.foreach("/proc") do |file|
@@ -139,7 +141,7 @@ Dir.foreach("/proc") do |file|
 			p_mem = text[/^VmRSS\:.*/].to_s[/[0-9]+/].to_s.to_i
 		end
 
-		if p_name != ""
+		if p_name != "" and p_name[/^[a-zA-Z0-9]+/]
 			proc_list += [[p_name, p_cpu, p_mem, p_disk, p_io]] end
 	end
 end

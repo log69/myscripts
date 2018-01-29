@@ -60,9 +60,9 @@ if sys_uptime_day > 0
 end
 # print hours of uptime
 print ("%02d" % sys_uptime_hour).to_s + ":" + ("%02d" % sys_uptime_min).to_s + ", "
-# print times of waking up
-f_wake = "/sys/power/wakeup_count"
-print "awaken #{File.read(f_wake)[/[0-9]+/]}x, " if File.file? f_wake
+## print times of waking up
+#f_wake = "/sys/power/wakeup_count"
+#print "awaken #{File.read(f_wake)[/[0-9]+/]}x, " if File.file? f_wake
 # print load average
 print "load " + (File.read("/proc/loadavg").split[0..2] * ", ").to_s
 puts; puts

@@ -61,7 +61,7 @@ end
 # print hours of uptime
 print ("%02d" % sys_uptime_hour).to_s + ":" + ("%02d" % sys_uptime_min).to_s + ", "
 # print times of waking up
-f_wake = `journalctl 2>/dev/null | grep -iE "acpi.*resume" -c`.to_i
+f_wake = `journalctl --since "$(uptime -s)" 2>/dev/null | grep -iE "acpi.*resume" -c`.to_i
 print "awaken #{f_wake}x, "
 # print load average
 print "load " + (File.read("/proc/loadavg").split[0..2] * ", ").to_s

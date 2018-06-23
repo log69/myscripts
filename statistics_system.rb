@@ -300,7 +300,7 @@ if which("df")
 			print yellow(s)
 		end
 		# print disk info
-		puts "#{z[0]} #{z[5]} #{z[1]} #{z[4]}"
+		puts "#{z[0]} #{z[5]} max #{z[1]} used #{z[4]}"
 	end
 end
 

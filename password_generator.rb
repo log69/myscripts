@@ -123,6 +123,14 @@ def get_password_pron(len)
 	ch_con = "bcdfhkmnprstvwxz".chars.to_a
 	ch_con_double = %w[ ch kh ph sh th ]
 
+#	ch = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789".chars.to_a
+#	ch_low = "abcdefghijklmnopqrstuvwxyz".chars.to_a
+#	ch_upp = "ABCDEFGHIJKLMNOPQRSTUVWXYZ".chars.to_a
+#	ch_num = "0123456789".chars.to_a
+#	ch_vow = "aeiou".chars.to_a
+#	ch_con = "bcdfghjklmnpqrstvwxz".chars.to_a
+
+
 	# pass should have at least 4 chars
 	if len < 4 then return "" end
 

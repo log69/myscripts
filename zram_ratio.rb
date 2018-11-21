@@ -16,6 +16,6 @@ if File.exist? "/sys/block/zram0"
 
 else
 
-	warn "error: no zram available"
+	#warn "error: no zram available"
 
 end
